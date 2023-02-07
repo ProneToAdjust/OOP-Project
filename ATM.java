@@ -45,7 +45,7 @@ public class ATM {
 	 * @param theBank	the Bank object whose accounts to use
 	 * @param sc		the Scanner objec to use for user input
 	 */
-	public User loginMenu(Bank theBank) {
+	public void loginMenu(Bank theBank) {
 		
 		// inits
 		String userID;
@@ -72,9 +72,6 @@ public class ATM {
 			
 		} while(loginResult == false); 	// continue looping until we have a  
 									// successful login
-		
-		return currentUser;
-		
 	}
 	
 	/**
