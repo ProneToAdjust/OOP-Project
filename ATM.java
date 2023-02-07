@@ -50,6 +50,7 @@ public class ATM {
 		// inits
 		String userID;
 		String pin;
+		boolean loginResult;
 		
 		// prompt user for user ID/pin combo until a correct one is reached
 		do {
@@ -62,12 +63,14 @@ public class ATM {
 			
 			// try to get user object corresponding to ID and pin combo
 			currentUser = theBank.userLogin(userID, pin);
-			if (currentUser == null) {
+
+			loginResult = controller.loginUser(theBank, userID, pin);
+			if (loginResult == false) {
 				System.out.println("Incorrect user ID/pin combination. " + 
 						"Please try again");
 			}
 			
-		} while(currentUser == null); 	// continue looping until we have a  
+		} while(loginResult == false); 	// continue looping until we have a  
 									// successful login
 		
 		return currentUser;
@@ -80,7 +83,7 @@ public class ATM {
 	public void mainMenu() {
 		
 		// print a summary of the user's accounts
-		currentUser.printAccountsSummary();
+		controller.printSummary();;
 		
 		// init
 		int choice;

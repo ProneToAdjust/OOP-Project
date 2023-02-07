@@ -1,6 +1,20 @@
 import java.util.ArrayList;
 
 public class Controller {
+	private User currentUser;
+
+	public boolean loginUser(Bank bank, String userID, String pin) {
+		currentUser = bank.userLogin(userID, pin);
+		if(currentUser != null){
+			return true;
+
+		}
+		return false;
+	}
+
+	public void printSummary(){
+		currentUser.printAccountsSummary();
+	}
 
 	/**
 	 * Process a fund withdraw from an account.
