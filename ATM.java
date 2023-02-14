@@ -103,6 +103,8 @@ public class ATM {
 			}
 			
 		} while (choice < 1 || choice > 5);
+
+		System.out.println();
 		
 		// process the choice
 		switch (choice) {
@@ -133,22 +135,12 @@ public class ATM {
 	}
 
 	private void transactionHistoryMenu() {
+		System.out.println("Account transaction history");
 
-		int selectedAcc;
-		int numOfAccounts = controller.getNumberOfAccounts();
-		
-		// get account whose transactions to print
-		do {
-			System.out.printf("Enter the number (1-%d) of the account\nwhose " + 
-					"transactions you want to see: ", numOfAccounts);
-			selectedAcc = scanner.nextInt()-1;
-			if (selectedAcc < 0 || selectedAcc >= numOfAccounts) {
-				System.out.println("Invalid account. Please try again.");
-			}
-		} while (selectedAcc < 0 || selectedAcc >= numOfAccounts);
+		// get account to view transaction history
+		int selectedAcc = selectAccountMenu();
 		
 		// print the transaction history
-		
 		ArrayList<String> transHistories = controller.getTransactionHistory(selectedAcc);
 
 		System.out.printf("\nTransaction history:\n");
@@ -160,21 +152,16 @@ public class ATM {
 	}
 
 	private void withdrawFundsMenu() {
-		int fromAcct;
+		int selectedAcc;
 		double amount;
 		double acctBal;
 		String memo;
+
+		System.out.println("Withdraw funds");
 		
 		// get account to withdraw from
-		do {
-			System.out.printf("Enter the number (1-%d) of the account to " + 
-					"withdraw from: ", currentUser.numAccounts());
-			fromAcct = scanner.nextInt()-1;
-			if (fromAcct < 0 || fromAcct >= currentUser.numAccounts()) {
-				System.out.println("Invalid account. Please try again.");
-			}
-		} while (fromAcct < 0 || fromAcct >= currentUser.numAccounts());
-		acctBal = currentUser.getAcctBalance(fromAcct);
+		selectedAcc = selectAccountMenu();
+		acctBal = currentUser.getAcctBalance(selectedAcc);
 		
 		// get amount to transfer
 		do {
@@ -196,23 +183,18 @@ public class ATM {
 		System.out.print("Enter a memo: ");
 		memo = scanner.nextLine();
 
-		controller.withdrawFunds(currentUser, fromAcct, amount, memo);
+		controller.withdrawFunds(currentUser, selectedAcc, amount, memo);
 	}
 
 	private void depositFundsMenu() {
-		int toAcct;
+		int selectedAcc;
 		double amount;
 		String memo;
 
+		System.out.println("Deposit funds");
+
 		// get account to withdraw from
-		do {
-			System.out.printf("Enter the number (1-%d) of the account to " + 
-					"deposit to: ", currentUser.numAccounts());
-			toAcct = scanner.nextInt()-1;
-			if (toAcct < 0 || toAcct >= currentUser.numAccounts()) {
-				System.out.println("Invalid account. Please try again.");
-			}
-		} while (toAcct < 0 || toAcct >= currentUser.numAccounts());
+		selectedAcc = selectAccountMenu();
 		
 		// get amount to transfer
 		do {
@@ -230,7 +212,7 @@ public class ATM {
 		System.out.print("Enter a memo: ");
 		memo = scanner.nextLine();
 
-		controller.depositFunds(currentUser, toAcct, amount, memo);
+		controller.depositFunds(currentUser, selectedAcc, amount, memo);
 	}
 
 	private void transferFundsMenu() {
@@ -238,27 +220,17 @@ public class ATM {
 		int toAcct;
 		double amount;
 		double acctBal;
+
+		System.out.println("Transfer funds");
 		
 		// get account to transfer from
-		do {
-			System.out.printf("Enter the number (1-%d) of the account to " + 
-					"transfer from: ", currentUser.numAccounts());
-			fromAcct = scanner.nextInt()-1;
-			if (fromAcct < 0 || fromAcct >= currentUser.numAccounts()) {
-				System.out.println("Invalid account. Please try again.");
-			}
-		} while (fromAcct < 0 || fromAcct >= currentUser.numAccounts());
+		System.out.println("Account to transfer from:");
+		fromAcct = selectAccountMenu();
 		acctBal = currentUser.getAcctBalance(fromAcct);
 		
 		// get account to transfer to
-		do {
-			System.out.printf("Enter the number (1-%d) of the account to " + 
-					"transfer to: ", currentUser.numAccounts());
-			toAcct = scanner.nextInt()-1;
-			if (toAcct < 0 || toAcct >= currentUser.numAccounts()) {
-				System.out.println("Invalid account. Please try again.");
-			}
-		} while (toAcct < 0 || toAcct >= currentUser.numAccounts());
+		System.out.println("Account to transfer to");
+		toAcct = selectAccountMenu();
 		
 		// get amount to transfer
 		do {
@@ -274,6 +246,23 @@ public class ATM {
 		} while (amount < 0 || amount > acctBal);
 
 		controller.transferFunds(currentUser, fromAcct, toAcct, amount);
+	}
+
+	private int selectAccountMenu(){
+		int selectedAcc;
+		int numOfAccounts = controller.getNumberOfAccounts();
+		
+		do {
+			System.out.printf("Enter the number (1-%d) of the account you would like to select: ", numOfAccounts);
+
+			selectedAcc = scanner.nextInt()-1;
+
+			if (selectedAcc < 0 || selectedAcc >= numOfAccounts) {
+				System.out.println("Invalid account. Please try again.");
+			}
+		} while (selectedAcc < 0 || selectedAcc >= numOfAccounts);
+
+		return selectedAcc;
 	}
 
 }
