@@ -32,7 +32,7 @@ public class Controller {
 	 * @param currentUser	the logged-in User object
 	 * @param scanner		the Scanner object used for user input
 	 */
-	public void depositFunds(User currentUser, int accountIndex, double amount, String memo) {
+	public void depositFunds(int accountIndex, double amount, String memo) {
 		currentUser.addAcctTransaction(accountIndex, amount, memo);
 		
 	}

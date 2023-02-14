@@ -202,14 +202,11 @@ public class ATM {
 			} 
 		} while (amount < 0);
 		
-		// gobble up rest of previous input
-		scanner.nextLine();
-		
 		// get a memo
 		System.out.print("Enter a memo: ");
 		memo = scanner.nextLine();
 
-		controller.depositFunds(currentUser, selectedAcc, amount, memo);
+		controller.depositFunds(selectedAcc, amount, memo);
 	}
 
 	private void transferFundsMenu() {
