@@ -42,9 +42,8 @@ public class Controller {
 	 * @param currentUser	the logged-in User object
 	 * @param scanner		the Scanner object used for user input
 	 */
-	public void transferFunds(User currentUser, int fromAcct, int toAcct, double amount) {
-		
-		// finally, do the transfer 
+	public void transferFunds(int fromAcct, int toAcct, double amount) {
+
 		currentUser.addAcctTransaction(fromAcct, -1*amount, String.format(
 				"Transfer to account %s", currentUser.getAcctUUID(toAcct)));
 		currentUser.addAcctTransaction(toAcct, amount, String.format(

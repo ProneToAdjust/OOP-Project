@@ -33,7 +33,6 @@ public class ATM {
 
 	private Controller controller;
 	private Scanner scanner;
-	private User currentUser;
 
 	public ATM() {
 		this.scanner = new Scanner(System.in);
@@ -60,9 +59,6 @@ public class ATM {
 			userID = this.scanner.nextLine();
 			System.out.print("Enter pin: ");
 			pin = this.scanner.nextLine();
-			
-			// try to get user object corresponding to ID and pin combo
-			currentUser = theBank.userLogin(userID, pin);
 
 			loginResult = controller.loginUser(theBank, userID, pin);
 			if (loginResult == false) {
@@ -210,36 +206,36 @@ public class ATM {
 	}
 
 	private void transferFundsMenu() {
-		int fromAcct;
-		int toAcct;
-		double amount;
+		int fromAcc;
+		int toAcc;
+		double transferAmt;
 		double acctBal;
 
 		System.out.println("Transfer funds");
 		
 		// get account to transfer from
 		System.out.println("Account to transfer from:");
-		fromAcct = selectAccountMenu();
-		acctBal = currentUser.getAcctBalance(fromAcct);
+		fromAcc = selectAccountMenu();
+		acctBal = controller.getAccountBalance(fromAcc);
 		
 		// get account to transfer to
 		System.out.println("Account to transfer to");
-		toAcct = selectAccountMenu();
+		toAcc = selectAccountMenu();
 		
 		// get amount to transfer
 		do {
 			System.out.printf("Enter the amount to transfer (max $%.02f): $", 
 					acctBal);
-			amount = scanner.nextDouble();
-			if (amount < 0) {
+			transferAmt = scanner.nextDouble();
+			if (transferAmt < 0) {
 				System.out.println("Amount must be greater than zero.");
-			} else if (amount > acctBal) {
+			} else if (transferAmt > acctBal) {
 				System.out.printf("Amount must not be greater than balance " +
 						"of $.02f.\n", acctBal);
 			}
-		} while (amount < 0 || amount > acctBal);
+		} while (transferAmt < 0 || transferAmt > acctBal);
 
-		controller.transferFunds(currentUser, fromAcct, toAcct, amount);
+		controller.transferFunds(fromAcc, toAcc, transferAmt);
 	}
 
 	private int selectAccountMenu(){
