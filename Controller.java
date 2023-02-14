@@ -51,10 +51,20 @@ public class Controller {
 				"Transfer from account %s", currentUser.getAcctUUID(fromAcct)));
 	}
 
-	public ArrayList<Transaction> getTransactionHistory(User user, int accountIndex) {
-		Account selectedAccount = user.getAccount(accountIndex);
+	public ArrayList<String> getTransactionHistory(int accountIndex) {
+		Account selectedAccount = currentUser.getAccount(accountIndex);
 		ArrayList<Transaction> transactions = selectedAccount.getTransHistory();
 
-		return transactions;
+		ArrayList<String> transHistories = new ArrayList<String>();
+
+		for (Transaction transaction : transactions) {
+			transHistories.add(transaction.getSummaryLine());
+		}
+
+		return transHistories;
+	}
+
+	public int getNumberOfAccounts(){
+		return currentUser.numAccounts();
 	}
 }

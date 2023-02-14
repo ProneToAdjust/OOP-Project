@@ -134,25 +134,26 @@ public class ATM {
 
 	private void transactionHistoryMenu() {
 
-		int theAcct;
+		int selectedAcc;
+		int numOfAccounts = controller.getNumberOfAccounts();
 		
 		// get account whose transactions to print
 		do {
 			System.out.printf("Enter the number (1-%d) of the account\nwhose " + 
-					"transactions you want to see: ", currentUser.numAccounts());
-			theAcct = scanner.nextInt()-1;
-			if (theAcct < 0 || theAcct >= currentUser.numAccounts()) {
+					"transactions you want to see: ", numOfAccounts);
+			selectedAcc = scanner.nextInt()-1;
+			if (selectedAcc < 0 || selectedAcc >= numOfAccounts) {
 				System.out.println("Invalid account. Please try again.");
 			}
-		} while (theAcct < 0 || theAcct >= currentUser.numAccounts());
+		} while (selectedAcc < 0 || selectedAcc >= numOfAccounts);
 		
 		// print the transaction history
 		
-		ArrayList<Transaction> transactions = controller.getTransactionHistory(currentUser, theAcct);
+		ArrayList<String> transHistories = controller.getTransactionHistory(selectedAcc);
 
 		System.out.printf("\nTransaction history:\n");
-		for (int t = transactions.size()-1; t >= 0; t--) {
-			System.out.println(transactions.get(t).getSummaryLine());
+		for (String transSummary : transHistories) {
+			System.out.println(transSummary);
 		}
 		System.out.println();
 
