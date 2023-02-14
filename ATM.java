@@ -154,36 +154,33 @@ public class ATM {
 	private void withdrawFundsMenu() {
 		int selectedAcc;
 		double amount;
-		double acctBal;
+		double accountBal;
 		String memo;
 
 		System.out.println("Withdraw funds");
 		
 		// get account to withdraw from
 		selectedAcc = selectAccountMenu();
-		acctBal = currentUser.getAcctBalance(selectedAcc);
+		accountBal = controller.getAccountBalance(selectedAcc);
 		
 		// get amount to transfer
 		do {
 			System.out.printf("Enter the amount to withdraw (max $%.02f): $", 
-					acctBal);
+					accountBal);
 			amount = scanner.nextDouble();
 			if (amount < 0) {
 				System.out.println("Amount must be greater than zero.");
-			} else if (amount > acctBal) {
+			} else if (amount > accountBal) {
 				System.out.printf("Amount must not be greater than balance " +
-						"of $%.02f.\n", acctBal);
+						"of $%.02f.\n", accountBal);
 			}
-		} while (amount < 0 || amount > acctBal);
-
-		// gobble up rest of previous input
-		scanner.nextLine();
+		} while (amount < 0 || amount > accountBal);
 		
 		// get a memo
 		System.out.print("Enter a memo: ");
 		memo = scanner.nextLine();
 
-		controller.withdrawFunds(currentUser, selectedAcc, amount, memo);
+		controller.withdrawFunds(selectedAcc, amount, memo);
 	}
 
 	private void depositFundsMenu() {

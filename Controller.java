@@ -21,7 +21,7 @@ public class Controller {
 	 * @param currentUser	the logged-in User object
 	 * @param scanner		the Scanner object used for user input
 	 */
-	public void withdrawFunds(User currentUser, int accountIndex, double amount, String memo) {
+	public void withdrawFunds(int accountIndex, double amount, String memo) {
 		// do the withdrwal
 		currentUser.addAcctTransaction(accountIndex, -1*amount, memo);
 		
@@ -66,5 +66,9 @@ public class Controller {
 
 	public int getNumberOfAccounts(){
 		return currentUser.numAccounts();
+	}
+
+	public double getAccountBalance(int accountIndex){
+		return currentUser.getAcctBalance(accountIndex);
 	}
 }
