@@ -30,6 +30,16 @@ public class User {
 	private ArrayList<Account> accounts;
 	
 	/**
+	 *  Transfer limits for this user
+	 */
+	private double transferLimit;
+
+	/**
+	 * Withdrawal limits for this user
+	 */
+	private double withdrawalLimit;
+
+	/**
 	 * Create new user
 	 * @param firstName	the user's first name
 	 * @param lastName	the user's last name
@@ -57,6 +67,10 @@ public class User {
 		
 		// create empty list of accounts
 		this.accounts = new ArrayList<Account>();
+
+		// set default transfer and withdrawal limits
+		this.transferLimit = 10000;
+		this.withdrawalLimit = 10000;
 		
 		// print log message
 		System.out.printf("New user %s, %s with ID %s created.\n", 
@@ -158,12 +172,28 @@ public class User {
 	 */
 	public void printAccountsSummary() {
 		
-		System.out.printf("\n\n%s %s's accounts summary\n", this.firstName, this.lastName);
+		System.out.printf("\n%s %s's accounts summary\n", this.firstName, this.lastName);
 		for (int a = 0; a < this.accounts.size(); a++) {
 			System.out.printf("%d) %s\n", a+1, 
 					this.accounts.get(a).getSummaryLine());
 		}
 		System.out.println();
 		
+	}
+
+	public double getTransferLimit() {
+		return transferLimit;
+	}
+
+	public void setTransferLimit(double transferLimit) {
+		this.transferLimit = transferLimit;
+	}
+
+	public double getWithdrawalLimit() {
+		return withdrawalLimit;
+	}
+
+	public void setWithdrawalLimit(double withdrawalLimit) {
+		this.withdrawalLimit = withdrawalLimit;
 	}
 }

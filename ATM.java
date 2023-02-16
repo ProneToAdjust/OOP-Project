@@ -38,7 +38,7 @@ public class ATM {
 		this.scanner = new Scanner(System.in);
 		this.controller = new Controller();
 	}
-	
+
 	/**
 	 * Print the ATM's login menu.
 	 * @param theBank	the Bank object whose accounts to use
@@ -76,7 +76,7 @@ public class ATM {
 	public void mainMenu() {
 		
 		// print a summary of the user's accounts
-		controller.printSummary();;
+		controller.printSummary();
 		
 		// init
 		int choice;
@@ -89,13 +89,14 @@ public class ATM {
 			System.out.println("  2) Withdraw");
 			System.out.println("  3) Deposit");
 			System.out.println("  4) Transfer");
-			System.out.println("  5) Quit");
+			System.out.println("  5) Settings");
+			System.out.println("  6) Quit");
 			System.out.println();
 			System.out.print("Enter choice: ");
 			choice = this.scanner.nextInt();
 			
 			if (choice < 1 || choice > 5) {
-				System.out.println("Invalid choice. Please choose 1-5.");
+				System.out.println("Invalid choice. Please choose 1-6.");
 			}
 			
 		} while (choice < 1 || choice > 5);
@@ -118,13 +119,16 @@ public class ATM {
 			transferFundsMenu();
 			break;
 		case 5:
+			settingsMenu();
+			break;
+		case 6:
 			// gobble up rest of previous input
 			this.scanner.nextLine();
 			break;
 		}
 		
 		// redisplay this menu unless the user wants to quit
-		if (choice != 5) {
+		if (choice != 6) {
 			this.mainMenu();
 		}
 		
@@ -152,25 +156,31 @@ public class ATM {
 		double amount;
 		double accountBal;
 		String memo;
+		double withdrawalLimit;
 
 		System.out.println("Withdraw funds");
+		
+		controller.printSummary();
 		
 		// get account to withdraw from
 		selectedAcc = selectAccountMenu();
 		accountBal = controller.getAccountBalance(selectedAcc);
+		withdrawalLimit = controller.getWithdrawalLimit();
 		
 		// get amount to transfer
 		do {
-			System.out.printf("Enter the amount to withdraw (max $%.02f): $", 
-					accountBal);
+			System.out.printf("Enter the amount to withdraw (max $%.2f): $", withdrawalLimit);
 			amount = scanner.nextDouble();
+
 			if (amount < 0) {
 				System.out.println("Amount must be greater than zero.");
 			} else if (amount > accountBal) {
-				System.out.printf("Amount must not be greater than balance " +
-						"of $%.02f.\n", accountBal);
+				System.out.printf("Amount must not be greater than balance " + "of $%.02f.\n", accountBal);
+			} else if (amount > withdrawalLimit) {
+				System.out.printf("Amount must not be greater than withdrawal limit " + "of $%.02f.\n", withdrawalLimit);
 			}
-		} while (amount < 0 || amount > accountBal);
+
+		} while (amount < 0 || amount > accountBal || amount > withdrawalLimit);
 		
 		// get a memo
 		System.out.print("Enter a memo: ");
@@ -210,8 +220,11 @@ public class ATM {
 		int toAcc;
 		double transferAmt;
 		double acctBal;
+		double transferLimit;
 
 		System.out.println("Transfer funds");
+
+		controller.printSummary();
 		
 		// get account to transfer from
 		System.out.println("Account to transfer from:");
@@ -221,19 +234,24 @@ public class ATM {
 		// get account to transfer to
 		System.out.println("Account to transfer to");
 		toAcc = selectAccountMenu();
+
+		transferLimit = controller.getTransferLimit();
 		
 		// get amount to transfer
 		do {
-			System.out.printf("Enter the amount to transfer (max $%.02f): $", 
-					acctBal);
+			System.out.printf("Enter the amount to transfer (max $%.02f): $", transferLimit);
+
 			transferAmt = scanner.nextDouble();
+
 			if (transferAmt < 0) {
 				System.out.println("Amount must be greater than zero.");
 			} else if (transferAmt > acctBal) {
-				System.out.printf("Amount must not be greater than balance " +
-						"of $.02f.\n", acctBal);
+				System.out.printf("Amount must not be greater than balance " + "of $%.2f.\n", acctBal);
+			} else if (transferAmt > transferLimit) {
+				System.out.printf("Amount must not be greater than transfer limit " + "of $%.2f.\n", transferLimit);
 			}
-		} while (transferAmt < 0 || transferAmt > acctBal);
+
+		} while (transferAmt < 0 || transferAmt > acctBal || transferAmt > transferLimit);
 
 		controller.transferFunds(fromAcc, toAcc, transferAmt);
 	}
@@ -255,4 +273,67 @@ public class ATM {
 		return selectedAcc;
 	}
 
+	private void settingsMenu() {
+		int choice;
+
+		do {
+			
+			System.out.println("Settings");
+			System.out.println("  1) Transfer limit");
+			System.out.println("  2) Withdrawal limit");
+			System.out.println("  3) Exit settings");
+			System.out.println();
+			System.out.print("Enter choice: ");
+			choice = this.scanner.nextInt();
+			
+			if (choice < 1 || choice > 3) {
+				System.out.println("Invalid choice. Please choose 1-3.");
+			}
+			
+		} while (choice < 1 || choice > 3);
+
+		switch (choice) {
+		
+			case 1:
+				changeTransferLimitMenu();
+				break;
+			case 2:
+				changeWithdrawalLimitMenu();
+				break;
+			case 3:
+				break;
+			}
+	}
+	
+	private void changeTransferLimitMenu() {
+		double amount;
+
+		do {
+			System.out.printf("Enter new transfer limit: $");
+			amount = scanner.nextDouble();
+			if (amount < 0) {
+				System.out.println("Amount must be greater than zero.");
+			} 
+		} while (amount < 0);
+		
+		controller.changeTransferLimit(amount);
+
+		System.out.printf("Transfer limit has been set to $%.2f", amount);
+	}
+
+	private void changeWithdrawalLimitMenu() {
+		double amount;
+
+		do {
+			System.out.printf("Enter new withdrawal limit: $");
+			amount = scanner.nextDouble();
+			if (amount < 0) {
+				System.out.println("Amount must be greater than zero.");
+			} 
+		} while (amount < 0);
+		
+		controller.changeWithdrawalLimit(amount);
+
+		System.out.printf("Withdrawal limit has been set to $%.2f", amount);
+	}
 }

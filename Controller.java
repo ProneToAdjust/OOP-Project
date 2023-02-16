@@ -70,4 +70,20 @@ public class Controller {
 	public double getAccountBalance(int accountIndex){
 		return currentUser.getAcctBalance(accountIndex);
 	}
+
+	public void changeTransferLimit(double amount) {
+		currentUser.setTransferLimit(amount);
+	}
+
+	public void changeWithdrawalLimit(double amount) {
+		currentUser.setWithdrawalLimit(amount);
+	}
+
+	public double getTransferLimit() {
+		return currentUser.getTransferLimit();
+	}
+
+	public double getWithdrawalLimit() {
+		return currentUser.getWithdrawalLimit();
+	}
 }
