@@ -8,7 +8,7 @@ public class ATM {
 		ATM atm = new ATM();
 		
 		// init Bank
-		Bank bank = new Bank("Fleeca");
+		Bank bank = new Bank("Fleeca");//fleeca bank
 		
 		// add a user, which also creates a Savings account
 		User testUser = bank.addUser("Sibei", "Suei", "4444");
