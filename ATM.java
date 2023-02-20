@@ -75,8 +75,7 @@ public class ATM {
 	 */
 	public void mainMenu() {
 		
-		// print a summary of the user's accounts
-		controller.printSummary();
+	
 		
 		// init
 		int choice;
@@ -84,8 +83,8 @@ public class ATM {
 		// user menu
 		do {
 			
-			System.out.println("What would you like to do?");
-			System.out.println("  1) Show account transaction history");
+			System.out.println("\n\nWhat would you like to do?");
+			System.out.println("  1) Show Account information");
 			System.out.println("  2) Withdraw");
 			System.out.println("  3) Deposit");
 			System.out.println("  4) Transfer");
@@ -95,11 +94,11 @@ public class ATM {
 			System.out.print("Enter choice: ");
 			choice = this.scanner.nextInt();
 			
-			if (choice < 1 || choice > 5) {
+			if (choice < 1 || choice > 6) {
 				System.out.println("Invalid choice. Please choose 1-6.");
 			}
 			
-		} while (choice < 1 || choice > 5);
+		} while (choice < 1 || choice > 6);
 
 		System.out.println();
 		
@@ -107,7 +106,7 @@ public class ATM {
 		switch (choice) {
 		
 		case 1:
-			this.transactionHistoryMenu();
+			this.showAccountInformationMenu();
 			break;
 		case 2:
 			withdrawFundsMenu();
@@ -124,6 +123,9 @@ public class ATM {
 		case 6:
 			// gobble up rest of previous input
 			this.scanner.nextLine();
+			System.out.println("Thank You for using Fleeca Bank!");
+			System.out.println("Goodbye!");
+			System.exit(0);
 			break;
 		}
 		
@@ -134,6 +136,11 @@ public class ATM {
 		
 	}
 
+	private void showAccountInformationMenu()
+	{
+			// print a summary of the user's accounts
+			controller.printSummary();
+	}
 	private void transactionHistoryMenu() {
 		System.out.println("Account transaction history");
 
