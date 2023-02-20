@@ -106,7 +106,7 @@ public class ATM {
 		switch (choice) {
 		
 		case 1:
-			this.showAccountInformationMenu();
+			showAccountInformationMenu();
 			break;
 		case 2:
 			withdrawFundsMenu();
@@ -124,7 +124,7 @@ public class ATM {
 			// gobble up rest of previous input
 			this.scanner.nextLine();
 			System.out.println("Thank You for using Fleeca Bank!");
-			System.out.println("Goodbye!");
+			System.out.println("Goodbye!\n");
 			System.exit(0);
 			break;
 		}
@@ -140,29 +140,31 @@ public class ATM {
 	{
 			int accountchoice;
 			int transactionchoice;
-			int numOfAccounts = controller.getNumberOfAccounts();
-			double accountBal;
-			controller.printAccountsNumberAndType();
-			//prints only the account number and the account type
-			accountchoice = selectAccountMenu();
-			//choose which account the user wants to explore
-			controller.printSingleAccountSummary(accountchoice);
+			controller.printSummary();
+			//prints account summary
 			do{
-			System.out.print("Do you want to show the account transaction history for the account?\n1) Yes\n2) No\n");
-			transactionchoice = scanner.nextInt();
+				System.out.print("Do you want to show the account transaction history for the account?\n1) Yes\n2) No\nEnter the number (1-2): ");
+				transactionchoice = scanner.nextInt();
+	
+				}while(transactionchoice<1 || transactionchoice>2);
+				if (transactionchoice == 1)
+				{
 
-			}while(transactionchoice<1 || transactionchoice>2);
-			if (transactionchoice == 1)
-			{
-				transactionHistoryMenu(accountchoice);
-
-			}
+					accountchoice = selectAccountMenu();
+					transactionHistoryMenu(accountchoice);
+	
+				}
+				else if(transactionchoice == 2)
+				{
+					System.out.println("\nExiting Account Information\n");
+				}
+			
+			//choose which account the user wants to explore
+			
+			
 			
 	}
 	private void transactionHistoryMenu(int account) {
-		System.out.println("Account transaction history");
-
-
 		// print the transaction history
 		ArrayList<String> transHistories = controller.getTransactionHistory(account);
 
