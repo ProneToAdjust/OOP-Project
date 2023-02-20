@@ -138,8 +138,13 @@ public class ATM {
 
 	private void showAccountInformationMenu()
 	{
+
 			// print a summary of the user's accounts
 			controller.printSummary();
+
+
+
+			transactionHistoryMenu();
 	}
 	private void transactionHistoryMenu() {
 		System.out.println("Account transaction history");
