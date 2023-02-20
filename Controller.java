@@ -16,6 +16,17 @@ public class Controller {
 		currentUser.printAccountsSummary();
 	}
 
+	public void printAccountsNumberAndType()
+	{
+		currentUser.printAccountNumbersAndType();
+	}
+
+	public void printSingleAccountSummary(int account)
+	{
+		currentUser.printSingleAccountSummary(account);
+	}
+
+	 
 	/**
 	 * Process a fund withdraw from an account.
 	 * @param currentUser	the logged-in User object

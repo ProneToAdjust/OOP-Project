@@ -138,22 +138,33 @@ public class ATM {
 
 	private void showAccountInformationMenu()
 	{
+			int accountchoice;
+			int transactionchoice;
+			int numOfAccounts = controller.getNumberOfAccounts();
+			double accountBal;
+			controller.printAccountsNumberAndType();
+			//prints only the account number and the account type
+			accountchoice = selectAccountMenu();
+			//choose which account the user wants to explore
+			controller.printSingleAccountSummary(accountchoice);
+			do{
+			System.out.print("Do you want to show the account transaction history for the account?\n1) Yes\n2) No\n");
+			transactionchoice = scanner.nextInt();
 
-			// print a summary of the user's accounts
-			controller.printSummary();
+			}while(transactionchoice<1 || transactionchoice>2);
+			if (transactionchoice == 1)
+			{
+				transactionHistoryMenu(accountchoice);
 
-
-
-			transactionHistoryMenu();
+			}
+			
 	}
-	private void transactionHistoryMenu() {
+	private void transactionHistoryMenu(int account) {
 		System.out.println("Account transaction history");
 
-		// get account to view transaction history
-		int selectedAcc = selectAccountMenu();
-		
+
 		// print the transaction history
-		ArrayList<String> transHistories = controller.getTransactionHistory(selectedAcc);
+		ArrayList<String> transHistories = controller.getTransactionHistory(account);
 
 		System.out.printf("\nTransaction history:\n");
 		for (String transSummary : transHistories) {
