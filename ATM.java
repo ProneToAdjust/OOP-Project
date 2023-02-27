@@ -10,22 +10,26 @@ public class ATM {
 		// init Bank
 		Bank bank = new Bank("Fleeca");//fleeca bank
 		
-		// add a user, which also creates a Savings account
+		// add two users, which also creates a Savings account
 		User testUser = bank.addUser("Sibei", "Suei", "4444");
-		
+		User testUser2 = bank.addUser("Ryan", "Ong", "5555");
+
 		// add a checking account for our user
 		Account checkingAccount = new Account("Checking", testUser, bank);
+		Account checkingAccount2 = new Account("Ryan", testUser2, bank);
 		testUser.addAccount(checkingAccount);
+		testUser2.addAccount(checkingAccount2);
 		bank.addAccount(checkingAccount);
+		bank.addAccount(checkingAccount2);
 		
 		// continue looping forever
 		while (true) {
 			
 			// stay in login prompt until successful login
 			atm.loginMenu(bank);
-			
+			System.out.println(bank.getAccounts().toString());
 			// stay in main menu until user quits
-			atm.mainMenu();
+			atm.mainMenu(bank);
 			
 		}
 
@@ -73,9 +77,7 @@ public class ATM {
 	/**
 	 * Print the ATM's menu for user actions.
 	 */
-	public void mainMenu() {
-		
-	
+	public void mainMenu(Bank theBank) {
 		
 		// init
 		int choice;
@@ -115,7 +117,7 @@ public class ATM {
 			depositFundsMenu();
 			break;
 		case 4:
-			transferFundsMenu();
+			transferFundsMenu(theBank);
 			break;
 		case 5:
 			settingsMenu();
@@ -131,7 +133,7 @@ public class ATM {
 		
 		// redisplay this menu unless the user wants to quit
 		if (choice != 6) {
-			this.mainMenu();
+			this.mainMenu(theBank);
 		}
 		
 	}
@@ -240,9 +242,10 @@ public class ATM {
 		controller.depositFunds(selectedAcc, amount, memo);
 	}
 
-	private void transferFundsMenu() {
+	private void transferFundsMenu(Bank theBank) {
 		int fromAcc;
 		int toAcc;
+		int typeTransfer;
 		double transferAmt;
 		double acctBal;
 		double transferLimit;
@@ -251,6 +254,16 @@ public class ATM {
 
 		controller.printSummary();
 		
+		// method to get the type of transfer user has selected
+		typeTransfer = getTypeTransfer();
+		// check using do while loop for the type of transfer user want to perform
+		// if user want to do internal, typetransfer == 1 and the internal methods will run
+		// if user want to do external, typetransfer == 2 and the externam transfer methods will run
+		
+		do {
+			if (typeTransfer == 1)
+			{
+
 		// get account to transfer from
 		System.out.println("Account to transfer from:");
 		fromAcc = selectAccountMenu();
@@ -281,6 +294,50 @@ public class ATM {
 		controller.transferFunds(fromAcc, toAcc, transferAmt);
 	}
 
+	else if (typeTransfer == 2)
+		{
+			//shows a list of bank uuid, for testing (not like you know
+			//which uuid you can key in without the print statements)
+		System.out.println("List of Accounts in the Bank");
+		System.out.println(theBank.getAcctUUID(0));
+		System.out.println(theBank.getAcctUUID(1));
+		System.out.println(theBank.getAcctUUID(2));
+		System.out.println(theBank.getAcctUUID(3));
+			// get account to transfer from
+		System.out.println("Account to transfer from:");
+		fromAcc = selectAccountMenu();
+		acctBal = controller.getAccountBalance(fromAcc);
+
+		// get account to transfer to
+		toAcc = selectExtAccountMenu(theBank);
+
+		transferLimit = controller.getTransferLimit();
+
+		// get amount to transfer
+		do {
+			System.out.printf("Enter the amount to transfer (max $%.02f): $", transferLimit);
+
+			transferAmt = scanner.nextDouble();
+
+			if (transferAmt < 0) {
+				System.out.println("Amount must be greater than zero.");
+			} else if (transferAmt > acctBal) {
+				System.out.printf("Amount must not be greater than balance " + "of $%.2f.\n", acctBal);
+			} else if (transferAmt > transferLimit) {
+				System.out.printf("Amount must not be greater than transfer limit " + "of $%.2f.\n", transferLimit);
+			}
+
+		} while (transferAmt < 0 || transferAmt > acctBal || transferAmt > transferLimit);
+
+		controller.transferExtFunds(fromAcc, toAcc, transferAmt, theBank);
+			}
+
+		else {
+			System.out.println("Invalid input. Please try again");
+			}
+		} while (typeTransfer < 0 || typeTransfer > 2 );
+	}
+
 	private int selectAccountMenu(){
 		int selectedAcc;
 		int numOfAccounts = controller.getNumberOfAccounts();
@@ -296,6 +353,40 @@ public class ATM {
 		} while (selectedAcc < 0 || selectedAcc >= numOfAccounts);
 
 		return selectedAcc;
+	}
+
+	private int selectExtAccountMenu(Bank theBank){
+		String uuid;
+		
+		do {
+			System.out.printf("Enter the account UUID that you want to transfer to: \n");
+
+			uuid = scanner.next();
+			// uuid must not be below or exceed 10 characters
+			if (uuid.length() != 10) {
+				System.out.println("Account UUID must have 10 characters. Please try again.");
+			}
+		} while (uuid.length() != 10);
+
+		return controller.getSelectedBankIndex(theBank, uuid);
+	}
+
+
+	public int getTypeTransfer()
+	{
+		int typeTransfer;
+		do {
+			// prompts user to check for the type of transfer
+			System.out.printf("Enter the number (1-2) for the type of transfer " + 
+			"you would like to perform \n");
+			System.out.printf("1. Internal\n");
+			System.out.printf("2. External (to 3rd party accounts)\n");
+			typeTransfer = scanner.nextInt();
+			if (typeTransfer < 1 || typeTransfer > 2 ) {
+				System.out.println("Invalid option. Please try again.");
+			}
+		} while (typeTransfer < 0 || typeTransfer > 2 );
+		return typeTransfer;
 	}
 
 	private void settingsMenu() {

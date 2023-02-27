@@ -61,6 +61,15 @@ public class Controller {
 				"Transfer from account %s", currentUser.getAcctUUID(fromAcct)));
 	}
 
+	public void transferExtFunds(int fromAcct, int toAcct, double amount, Bank theBank) {
+		currentUser.addAcctTransaction(fromAcct, -1*amount, String.format(
+				"Transfer to account %s", theBank.getAcctUUID(toAcct)));
+		theBank.addAcctTransaction(toAcct, amount, String.format(
+				"Transfer from account %s", currentUser.getAcctUUID(fromAcct)));
+		System.out.println("External Transferred Account Balance: " + theBank.getBalance(toAcct));
+	}
+
+
 	public ArrayList<String> getTransactionHistory(int accountIndex) {
 		Account selectedAccount = currentUser.getAccount(accountIndex);
 		ArrayList<Transaction> transactions = selectedAccount.getTransHistory();
@@ -72,6 +81,16 @@ public class Controller {
 		}
 
 		return transHistories;
+	}
+
+	public int getNumOfAccFromBank(Bank theBank)
+	{
+		return theBank.getAccounts().size();
+	}
+
+	public int getSelectedBankIndex(Bank theBank, String uuid)
+	{
+		return theBank.selectBankAcc(uuid);
 	}
 
 	public int getNumberOfAccounts(){

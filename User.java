@@ -214,4 +214,9 @@ public class User {
 	public void setWithdrawalLimit(double withdrawalLimit) {
 		this.withdrawalLimit = withdrawalLimit;
 	}
+
+	@Override
+	public String toString() {
+  	return getClass().getSimpleName() + "[name=" + firstName + "]";
+	}
 }

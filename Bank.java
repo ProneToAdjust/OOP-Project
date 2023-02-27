@@ -164,4 +164,46 @@ public class Bank {
 		return this.name;
 	}
 
+	public ArrayList<User> getUsers()
+	{	
+		return this.users;
+	}
+
+	public ArrayList<Account> getAccounts()
+	{	
+		return this.accounts;
+	}
+	//check bank account using uuid
+	// if uuid is correct, return bank account index
+	// if not, return a invalid message
+	public int selectBankAcc(String uuid) {
+		ArrayList<String> uuidList = new ArrayList<String>();
+		int result = -1;
+		for (int i = 0; i < this.accounts.size(); i++) {
+			String testUuid = this.accounts.get(i).getUUID();
+			uuidList.add(testUuid);
+			System.out.println(uuidList);
+			if (uuid.equals(testUuid)) {
+				result = i;
+				break;
+			}
+		}
+		if (result == -1) {
+			System.out.println("Bank account not found, please try again");
+		}
+		return result;
+	}
+
+	public void addAcctTransaction(int index, double amount, String memo) {
+		this.accounts.get(index).addTransaction(amount, memo);
+	}
+
+	public double getBalance(int index)
+	{
+		return this.accounts.get(index).getBalance();
+	}
+
+	public String getAcctUUID(int acctIdx) {
+		return this.accounts.get(acctIdx).getUUID();
+	}
 }
