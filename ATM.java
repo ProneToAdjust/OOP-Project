@@ -27,7 +27,6 @@ public class ATM {
 			
 			// stay in login prompt until successful login
 			atm.loginMenu(bank);
-			System.out.println(bank.getAccounts().toString());
 			// stay in main menu until user quits
 			atm.mainMenu(bank);
 			
@@ -296,13 +295,6 @@ public class ATM {
 
 	else if (typeTransfer == 2)
 		{
-			//shows a list of bank uuid, for testing (not like you know
-			//which uuid you can key in without the print statements)
-		System.out.println("List of Accounts in the Bank");
-		System.out.println(theBank.getAcctUUID(0));
-		System.out.println(theBank.getAcctUUID(1));
-		System.out.println(theBank.getAcctUUID(2));
-		System.out.println(theBank.getAcctUUID(3));
 			// get account to transfer from
 		System.out.println("Account to transfer from:");
 		fromAcc = selectAccountMenu();

@@ -182,7 +182,7 @@ public class Bank {
 		for (int i = 0; i < this.accounts.size(); i++) {
 			String testUuid = this.accounts.get(i).getUUID();
 			uuidList.add(testUuid);
-			System.out.println(uuidList);
+			//System.out.println(uuidList);
 			if (uuid.equals(testUuid)) {
 				result = i;
 				break;

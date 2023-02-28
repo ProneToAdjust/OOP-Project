@@ -66,7 +66,7 @@ public class Controller {
 				"Transfer to account %s", theBank.getAcctUUID(toAcct)));
 		theBank.addAcctTransaction(toAcct, amount, String.format(
 				"Transfer from account %s", currentUser.getAcctUUID(fromAcct)));
-		System.out.println("External Transferred Account Balance: " + theBank.getBalance(toAcct));
+		//System.out.println("External Transferred Account Balance: " + theBank.getBalance(toAcct));
 	}
 
 
