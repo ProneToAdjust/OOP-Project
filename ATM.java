@@ -90,7 +90,7 @@ public class ATM {
 			System.out.println("  3) Deposit");
 			System.out.println("  4) Transfer");
 			System.out.println("  5) Settings");
-			System.out.println("  6) Quit");
+			System.out.println("  6) Log out");
 			System.out.println();
 			System.out.print("Enter choice: ");
 			choice = this.scanner.nextInt();
@@ -122,11 +122,7 @@ public class ATM {
 			settingsMenu();
 			break;
 		case 6:
-			// gobble up rest of previous input
-			this.scanner.nextLine();
-			System.out.println("Thank You for using Fleeca Bank!");
-			System.out.println("Goodbye!\n");
-			System.exit(0);
+			System.out.println("Successfully logged out");
 			break;
 		}
 		
