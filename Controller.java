@@ -113,4 +113,8 @@ public class Controller {
 	public double getWithdrawalLimit() {
 		return currentUser.getWithdrawalLimit();
 	}
+
+	public String getUserName() {
+		return currentUser.getName();
+	}
 }

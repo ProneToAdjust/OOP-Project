@@ -214,4 +214,8 @@ public class User {
 	public String toString() {
   	return getClass().getSimpleName() + "[name=" + firstName + "]";
 	}
+
+	public String getName() {
+		return String.format("%s %s", firstName, lastName);
+	}
 }

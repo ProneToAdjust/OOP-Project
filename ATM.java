@@ -16,7 +16,7 @@ public class ATM {
 
 		// add a checking account for our user
 		Account checkingAccount = new Account("Checking", testUser, bank);
-		Account checkingAccount2 = new Account("Ryan", testUser2, bank);
+		Account checkingAccount2 = new Account("Checking", testUser2, bank);
 		testUser.addAccount(checkingAccount);
 		testUser2.addAccount(checkingAccount2);
 		bank.addAccount(checkingAccount);
@@ -80,6 +80,8 @@ public class ATM {
 		
 		// init
 		int choice;
+
+		System.out.printf("\nHello, %s", controller.getUserName());
 		
 		// user menu
 		do {
