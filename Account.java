@@ -110,19 +110,6 @@ public class Account {
 		}
 		
 	}
-	public String getAccountNumberAndType()
-	{
-		double balance = this.getBalance();
-		
-		// format summary line depending on whether balance is negative
-		if (balance >= 0) {
-			return String.format("%s : %s", this.uuid, 
-					this.name);
-		} else {
-			return String.format("%s : %s", this.uuid, 
-					this.name);
-		}
-	}
 	
 	/**
 	 * Print transaction history for account

@@ -180,24 +180,6 @@ public class User {
 		System.out.println();
 		
 	}
-	public void printAccountNumbersAndType()
-	{
-		System.out.printf("\n%s %s's accounts \n", this.firstName, this.lastName);
-		for (int a = 0; a < this.accounts.size(); a++) {
-			System.out.printf("%d) %s\n", a+1, 
-					this.accounts.get(a).getAccountNumberAndType());
-		}
-		System.out.println();
-	}
-	public void printSingleAccountSummary(int account)
-	{	
-		System.out.printf("\n%s %s's accounts summary\n", this.firstName, this.lastName);
-	
-			System.out.printf(" %s\n", this.accounts.get(account).getSummaryLine());
-		
-		System.out.println();
-
-	}
 
 	public double getTransferLimit() {
 		return transferLimit;
