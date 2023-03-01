@@ -199,7 +199,7 @@ public class ATM {
 		
 		// get a memo
 		System.out.print("Enter a memo: ");
-		memo = scanner.nextLine();
+		memo = scanner.next();
 
 		controller.withdrawFunds(selectedAcc, amount, memo);
 	}
@@ -210,6 +210,8 @@ public class ATM {
 		String memo;
 
 		System.out.println("Deposit funds");
+
+		controller.printSummary();
 
 		// get account to withdraw from
 		selectedAcc = selectAccountMenu();
@@ -225,7 +227,7 @@ public class ATM {
 		
 		// get a memo
 		System.out.print("Enter a memo: ");
-		memo = scanner.nextLine();
+		memo = scanner.next();
 
 		controller.depositFunds(selectedAcc, amount, memo);
 	}
