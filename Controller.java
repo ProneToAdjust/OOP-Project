@@ -94,12 +94,20 @@ public class Controller {
 		currentUser.setTransferLimit(amount);
 	}
 
+	public void changeExternalTransferLimit(double amount) {
+		currentUser.setExternalTransferLimit(amount);
+	}
+
 	public void changeWithdrawalLimit(double amount) {
 		currentUser.setWithdrawalLimit(amount);
 	}
 
 	public double getTransferLimit() {
 		return currentUser.getTransferLimit();
+	}
+
+	public double getExternalTransferLimit() {
+		return currentUser.getExternalTransferLimit();
 	}
 
 	public double getWithdrawalLimit() {

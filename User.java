@@ -35,6 +35,11 @@ public class User {
 	private double transferLimit;
 
 	/**
+	 *  External transfer limits for this user
+	 */
+	private double externalTransferLimit;
+
+	/**
 	 * Withdrawal limits for this user
 	 */
 	private double withdrawalLimit;
@@ -70,6 +75,7 @@ public class User {
 
 		// set default transfer and withdrawal limits
 		this.transferLimit = 10000;
+		this.externalTransferLimit = 10000;
 		this.withdrawalLimit = 10000;
 		
 		// print log message
@@ -187,6 +193,14 @@ public class User {
 
 	public void setTransferLimit(double transferLimit) {
 		this.transferLimit = transferLimit;
+	}
+
+	public double getExternalTransferLimit() {
+		return externalTransferLimit;
+	}
+
+	public void setExternalTransferLimit(double externalTransferLimit) {
+		this.externalTransferLimit = externalTransferLimit;
 	}
 
 	public double getWithdrawalLimit() {
