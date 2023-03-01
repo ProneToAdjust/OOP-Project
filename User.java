@@ -176,15 +176,14 @@ public class User {
 	/**
 	 * Print summaries for the accounts of this user.
 	 */
-	public void printAccountsSummary() {
+	public String getAccountsSummary() {
+		String summary = String.format("\n%s %s's accounts summary\n", firstName, lastName);
 		
-		System.out.printf("\n%s %s's accounts summary\n", this.firstName, this.lastName);
 		for (int a = 0; a < this.accounts.size(); a++) {
-			System.out.printf("%d) %s\n", a+1, 
-					this.accounts.get(a).getSummaryLine());
+			summary += String.format("%d) %s\n", a+1, accounts.get(a).getSummaryLine());
 		}
-		System.out.println();
 		
+		return summary;
 	}
 
 	public double getTransferLimit() {

@@ -136,7 +136,7 @@ public class ATM {
 	private void showAccountInformationMenu() {
 		int accountchoice;
 		int transactionchoice;
-		controller.printSummary();
+		System.out.println(controller.getSummary());
 		// prints account summary
 		do {
 			System.out.print(
@@ -175,7 +175,7 @@ public class ATM {
 
 		System.out.println("Withdraw funds");
 		
-		controller.printSummary();
+		System.out.println(controller.getSummary());
 		
 		// get account to withdraw from
 		selectedAcc = selectAccountMenu();
@@ -211,7 +211,7 @@ public class ATM {
 
 		System.out.println("Deposit funds");
 
-		controller.printSummary();
+		System.out.println(controller.getSummary());
 
 		// get account to withdraw from
 		selectedAcc = selectAccountMenu();
@@ -243,7 +243,7 @@ public class ATM {
 
 		System.out.println("Transfer funds");
 
-		controller.printSummary();
+		System.out.println(controller.getSummary());
 		
 		// method to get the type of transfer user has selected
 		typeTransfer = getTypeTransfer();

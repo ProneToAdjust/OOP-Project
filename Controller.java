@@ -12,8 +12,8 @@ public class Controller {
 		return false;
 	}
 
-	public void printSummary(){
-		currentUser.printAccountsSummary();
+	public String getSummary(){
+		return currentUser.getAccountsSummary();
 	}
 
 	/**
