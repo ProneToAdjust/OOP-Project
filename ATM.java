@@ -137,34 +137,27 @@ public class ATM {
 		
 	}
 
-	private void showAccountInformationMenu()
-	{
-			int accountchoice;
-			int transactionchoice;
-			controller.printSummary();
-			//prints account summary
-			do{
-				System.out.print("Do you want to show the account transaction history for the account?\n1) Yes\n2) No\nEnter the number (1-2): ");
-				transactionchoice = scanner.nextInt();
-	
-				}while(transactionchoice<1 || transactionchoice>2);
-				if (transactionchoice == 1)
-				{
+	private void showAccountInformationMenu() {
+		int accountchoice;
+		int transactionchoice;
+		controller.printSummary();
+		// prints account summary
+		do {
+			System.out.print(
+					"Do you want to show the account transaction history for the account?\n1) Yes\n2) No\nEnter the number (1-2): ");
+			transactionchoice = scanner.nextInt();
 
-					accountchoice = selectAccountMenu();
-					transactionHistoryMenu(accountchoice);
-	
-				}
-				else if(transactionchoice == 2)
-				{
-					System.out.println("\nExiting Account Information\n");
-				}
-			
-			//choose which account the user wants to explore
-			
-			
-			
+		} while (transactionchoice < 1 || transactionchoice > 2);
+		if (transactionchoice == 1) {
+
+			accountchoice = selectAccountMenu();
+			transactionHistoryMenu(accountchoice);
+
+		} else if (transactionchoice == 2) {
+			System.out.println("\nExiting Account Information\n");
+		}
 	}
+
 	private void transactionHistoryMenu(int account) {
 		// print the transaction history
 		ArrayList<String> transHistories = controller.getTransactionHistory(account);
@@ -260,74 +253,74 @@ public class ATM {
 		// if user want to do external, typetransfer == 2 and the externam transfer methods will run
 		
 		do {
-			if (typeTransfer == 1)
-			{
+			if (typeTransfer == 1) {
 
-		// get account to transfer from
-		System.out.println("Account to transfer from:");
-		fromAcc = selectAccountMenu();
-		acctBal = controller.getAccountBalance(fromAcc);
-		
-		// get account to transfer to
-		System.out.println("Account to transfer to");
-		toAcc = selectAccountMenu();
+				// get account to transfer from
+				System.out.println("Account to transfer from:");
+				fromAcc = selectAccountMenu();
+				acctBal = controller.getAccountBalance(fromAcc);
 
-		transferLimit = controller.getTransferLimit();
-		
-		// get amount to transfer
-		do {
-			System.out.printf("Enter the amount to transfer (max $%.02f): $", transferLimit);
+				// get account to transfer to
+				System.out.println("Account to transfer to");
+				toAcc = selectAccountMenu();
 
-			transferAmt = scanner.nextDouble();
+				transferLimit = controller.getTransferLimit();
 
-			if (transferAmt < 0) {
-				System.out.println("Amount must be greater than zero.");
-			} else if (transferAmt > acctBal) {
-				System.out.printf("Amount must not be greater than balance " + "of $%.2f.\n", acctBal);
-			} else if (transferAmt > transferLimit) {
-				System.out.printf("Amount must not be greater than transfer limit " + "of $%.2f.\n", transferLimit);
+				// get amount to transfer
+				do {
+					System.out.printf("Enter the amount to transfer (max $%.02f): $", transferLimit);
+
+					transferAmt = scanner.nextDouble();
+
+					if (transferAmt < 0) {
+						System.out.println("Amount must be greater than zero.");
+					} else if (transferAmt > acctBal) {
+						System.out.printf("Amount must not be greater than balance " + "of $%.2f.\n", acctBal);
+					} else if (transferAmt > transferLimit) {
+						System.out.printf("Amount must not be greater than transfer limit " + "of $%.2f.\n",
+								transferLimit);
+					}
+
+				} while (transferAmt < 0 || transferAmt > acctBal || transferAmt > transferLimit);
+
+				controller.transferFunds(fromAcc, toAcc, transferAmt);
 			}
 
-		} while (transferAmt < 0 || transferAmt > acctBal || transferAmt > transferLimit);
+			else if (typeTransfer == 2) {
+				// get account to transfer from
+				System.out.println("Account to transfer from:");
+				fromAcc = selectAccountMenu();
+				acctBal = controller.getAccountBalance(fromAcc);
 
-		controller.transferFunds(fromAcc, toAcc, transferAmt);
-	}
+				// get account to transfer to
+				toAcc = selectExtAccountMenu(theBank);
 
-	else if (typeTransfer == 2)
-		{
-			// get account to transfer from
-		System.out.println("Account to transfer from:");
-		fromAcc = selectAccountMenu();
-		acctBal = controller.getAccountBalance(fromAcc);
+				transferLimit = controller.getTransferLimit();
 
-		// get account to transfer to
-		toAcc = selectExtAccountMenu(theBank);
+				// get amount to transfer
+				do {
+					System.out.printf("Enter the amount to transfer (max $%.02f): $", transferLimit);
 
-		transferLimit = controller.getTransferLimit();
+					transferAmt = scanner.nextDouble();
 
-		// get amount to transfer
-		do {
-			System.out.printf("Enter the amount to transfer (max $%.02f): $", transferLimit);
+					if (transferAmt < 0) {
+						System.out.println("Amount must be greater than zero.");
+					} else if (transferAmt > acctBal) {
+						System.out.printf("Amount must not be greater than balance " + "of $%.2f.\n", acctBal);
+					} else if (transferAmt > transferLimit) {
+						System.out.printf("Amount must not be greater than transfer limit " + "of $%.2f.\n",
+								transferLimit);
+					}
 
-			transferAmt = scanner.nextDouble();
+				} while (transferAmt < 0 || transferAmt > acctBal || transferAmt > transferLimit);
 
-			if (transferAmt < 0) {
-				System.out.println("Amount must be greater than zero.");
-			} else if (transferAmt > acctBal) {
-				System.out.printf("Amount must not be greater than balance " + "of $%.2f.\n", acctBal);
-			} else if (transferAmt > transferLimit) {
-				System.out.printf("Amount must not be greater than transfer limit " + "of $%.2f.\n", transferLimit);
+				controller.transferExtFunds(fromAcc, toAcc, transferAmt, theBank);
 			}
 
-		} while (transferAmt < 0 || transferAmt > acctBal || transferAmt > transferLimit);
-
-		controller.transferExtFunds(fromAcc, toAcc, transferAmt, theBank);
+			else {
+				System.out.println("Invalid input. Please try again");
 			}
-
-		else {
-			System.out.println("Invalid input. Please try again");
-			}
-		} while (typeTransfer < 0 || typeTransfer > 2 );
+		} while (typeTransfer < 0 || typeTransfer > 2);
 	}
 
 	private int selectAccountMenu(){
