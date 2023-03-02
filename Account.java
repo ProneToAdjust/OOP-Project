@@ -47,7 +47,7 @@ public class Account {
 	 * Get the account number.
 	 * @return	the uuid
 	 */
-	public String getUUID() {
+	protected String getUUID() {
 		return this.uuid;
 	}
 	
@@ -55,7 +55,7 @@ public class Account {
 	 * Add a new transaction in this account.
 	 * @param amount	the amount transacted
 	 */
-	public void addTransaction(double amount) {
+	protected void addTransaction(double amount) {
 		
 		// create new transaction and add it to our list
 		Transaction newTrans = new Transaction(amount, this);
@@ -68,7 +68,7 @@ public class Account {
 	 * @param amount	the amount transacted
 	 * @param memo		the transaction memo
 	 */
-	public void addTransaction(double amount, String memo) {
+	protected void addTransaction(double amount, String memo) {
 		
 		// create new transaction and add it to our list
 		Transaction newTrans = new Transaction(amount, memo, this);
@@ -81,21 +81,19 @@ public class Account {
 	 * transactions.
 	 * @return	the balance value
 	 */
-	public double getBalance() {
-		
+	protected double getBalance() {
 		double balance = 0;
 		for (Transaction t : this.transactions) {
 			balance += t.getAmount();
 		}
 		return balance;
-		
 	}
 	
 	/**
 	 * Get summary line for account
 	 * @return	the summary line
 	 */
-	public String getSummaryLine() {
+	protected String getSummaryLine() {
 		
 		// get the account's balance
 		double balance = this.getBalance();
@@ -114,8 +112,7 @@ public class Account {
 	/**
 	 * Print transaction history for account
 	 */
-	public ArrayList<Transaction> getTransHistory() {
+	protected ArrayList<Transaction> getTransHistory() {
 		return transactions;
 	}
-
 }

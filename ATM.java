@@ -47,7 +47,7 @@ public class ATM {
 	 * @param theBank	the Bank object whose accounts to use
 	 * @param sc		the Scanner objec to use for user input
 	 */
-	public void loginMenu(Bank theBank) {
+	private void loginMenu(Bank theBank) {
 		
 		// inits
 		String userID;
@@ -76,7 +76,7 @@ public class ATM {
 	/**
 	 * Print the ATM's menu for user actions.
 	 */
-	public void mainMenu(Bank theBank) {
+	private void mainMenu(Bank theBank) {
 		
 		// init
 		int choice;
@@ -358,7 +358,7 @@ public class ATM {
 	}
 
 
-	public int getTypeTransfer()
+	private int getTypeTransfer()
 	{
 		int typeTransfer;
 		do {

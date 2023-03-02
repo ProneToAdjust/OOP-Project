@@ -36,7 +36,7 @@ public class Bank {
 	 * Generate a new universally unique ID for a user.
 	 * @return	the uuid
 	 */
-	public String getNewUserUUID() {
+	protected String getNewUserUUID() {
 		
 		// inits
 		String uuid;
@@ -71,7 +71,7 @@ public class Bank {
 	 * Generate a new universally unique ID for an account.
 	 * @return	the uuid
 	 */
-	public String getNewAccountUUID() {
+	protected String getNewAccountUUID() {
 		
 		// inits
 		String uuid;
@@ -109,7 +109,7 @@ public class Bank {
 	 * @param pin				the user's pin
 	 * @return					the new User object
 	 */
-	public User addUser(String firstName, String lastName, String pin) {
+	protected User addUser(String firstName, String lastName, String pin) {
 		
 		// create a new User object and add it to our list
 		User newUser = new User(firstName, lastName, pin, this);
@@ -128,7 +128,7 @@ public class Bank {
 	 * Add an existing account for a particular User.
 	 * @param newAccount	the account
 	 */
-	public void addAccount(Account newAccount) {
+	protected void addAccount(Account newAccount) {
 		this.accounts.add(newAccount);
 	}
 	
@@ -140,7 +140,7 @@ public class Bank {
 	 * @return			the User object, if login is successfull, or null, if 
 	 * 					it is not
 	 */
-	public User userLogin(String userID, String pin) {
+	protected User userLogin(String userID, String pin) {
 		
 		// search through list of users
 		for (User u : this.users) {
@@ -160,23 +160,23 @@ public class Bank {
 	 * Get the name of the bank.
 	 * @return	the name
 	 */
-	public String getName() {
+	protected String getName() {
 		return this.name;
 	}
 
-	public ArrayList<User> getUsers()
+	protected ArrayList<User> getUsers()
 	{	
 		return this.users;
 	}
 
-	public ArrayList<Account> getAccounts()
+	protected ArrayList<Account> getAccounts()
 	{	
 		return this.accounts;
 	}
 	//check bank account using uuid
 	// if uuid is correct, return bank account index
 	// if not, return a invalid message
-	public int selectBankAcc(String uuid) {
+	protected int selectBankAcc(String uuid) {
 		ArrayList<String> uuidList = new ArrayList<String>();
 		int result = -1;
 		for (int i = 0; i < this.accounts.size(); i++) {
@@ -194,16 +194,16 @@ public class Bank {
 		return result;
 	}
 
-	public void addAcctTransaction(int index, double amount, String memo) {
+	protected void addAcctTransaction(int index, double amount, String memo) {
 		this.accounts.get(index).addTransaction(amount, memo);
 	}
 
-	public double getBalance(int index)
+	protected double getBalance(int index)
 	{
 		return this.accounts.get(index).getBalance();
 	}
 
-	public String getAcctUUID(int acctIdx) {
+	protected String getAcctUUID(int acctIdx) {
 		return this.accounts.get(acctIdx).getUUID();
 	}
 }

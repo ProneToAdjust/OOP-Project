@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Controller {
 	private User currentUser;
 
-	public boolean loginUser(Bank bank, String userID, String pin) {
+	protected boolean loginUser(Bank bank, String userID, String pin) {
 		currentUser = bank.userLogin(userID, pin);
 		if(currentUser != null){
 			return true;
@@ -12,7 +12,7 @@ public class Controller {
 		return false;
 	}
 
-	public String getSummary(){
+	protected String getSummary(){
 		return currentUser.getAccountsSummary();
 	}
 
@@ -21,7 +21,7 @@ public class Controller {
 	 * @param currentUser	the logged-in User object
 	 * @param scanner		the Scanner object used for user input
 	 */
-	public void withdrawFunds(int accountIndex, double amount, String memo) {
+	protected void withdrawFunds(int accountIndex, double amount, String memo) {
 		// do the withdrwal
 		currentUser.addAcctTransaction(accountIndex, -1*amount, memo);
 		
@@ -32,7 +32,7 @@ public class Controller {
 	 * @param currentUser	the logged-in User object
 	 * @param scanner		the Scanner object used for user input
 	 */
-	public void depositFunds(int accountIndex, double amount, String memo) {
+	protected void depositFunds(int accountIndex, double amount, String memo) {
 		currentUser.addAcctTransaction(accountIndex, amount, memo);
 		
 	}
@@ -42,7 +42,7 @@ public class Controller {
 	 * @param currentUser	the logged-in User object
 	 * @param scanner		the Scanner object used for user input
 	 */
-	public void transferFunds(int fromAcct, int toAcct, double amount) {
+	protected void transferFunds(int fromAcct, int toAcct, double amount) {
 
 		currentUser.addAcctTransaction(fromAcct, -1*amount, String.format(
 				"Transfer to account %s", currentUser.getAcctUUID(toAcct)));
@@ -50,7 +50,7 @@ public class Controller {
 				"Transfer from account %s", currentUser.getAcctUUID(fromAcct)));
 	}
 
-	public void transferExtFunds(int fromAcct, int toAcct, double amount, Bank theBank) {
+	protected void transferExtFunds(int fromAcct, int toAcct, double amount, Bank theBank) {
 		currentUser.addAcctTransaction(fromAcct, -1*amount, String.format(
 				"Transfer to account %s", theBank.getAcctUUID(toAcct)));
 		theBank.addAcctTransaction(toAcct, amount, String.format(
@@ -59,7 +59,7 @@ public class Controller {
 	}
 
 
-	public ArrayList<String> getTransactionHistory(int accountIndex) {
+	protected ArrayList<String> getTransactionHistory(int accountIndex) {
 		Account selectedAccount = currentUser.getAccount(accountIndex);
 		ArrayList<Transaction> transactions = selectedAccount.getTransHistory();
 
@@ -72,57 +72,57 @@ public class Controller {
 		return transHistories;
 	}
 
-	public int getNumOfAccFromBank(Bank theBank)
+	protected int getNumOfAccFromBank(Bank theBank)
 	{
 		return theBank.getAccounts().size();
 	}
 
-	public int getSelectedBankIndex(Bank theBank, String uuid)
+	protected int getSelectedBankIndex(Bank theBank, String uuid)
 	{
 		return theBank.selectBankAcc(uuid);
 	}
 
-	public int getNumberOfAccounts(){
+	protected int getNumberOfAccounts(){
 		return currentUser.numAccounts();
 	}
 
-	public double getAccountBalance(int accountIndex){
+	protected double getAccountBalance(int accountIndex){
 		return currentUser.getAcctBalance(accountIndex);
 	}
 
-	public void changeTransferLimit(double amount) {
+	protected void changeTransferLimit(double amount) {
 		currentUser.setTransferLimit(amount);
 	}
 
-	public void changeExternalTransferLimit(double amount) {
+	protected void changeExternalTransferLimit(double amount) {
 		currentUser.setExternalTransferLimit(amount);
 	}
 
-	public void changeWithdrawalLimit(double amount) {
+	protected void changeWithdrawalLimit(double amount) {
 		currentUser.setWithdrawalLimit(amount);
 	}
 
-	public double getTransferLimit() {
+	protected double getTransferLimit() {
 		return currentUser.getTransferLimit();
 	}
 
-	public double getExternalTransferLimit() {
+	protected double getExternalTransferLimit() {
 		return currentUser.getExternalTransferLimit();
 	}
 
-	public double getWithdrawalLimit() {
+	protected double getWithdrawalLimit() {
 		return currentUser.getWithdrawalLimit();
 	}
 
-	public String getUserName() {
+	protected String getUserName() {
 		return currentUser.getName();
 	}
 
-	public boolean validatePin(String pin){
+	protected boolean validatePin(String pin){
 		return currentUser.validatePin(pin);
 	}
 
-	public void changePin(String newPin){
+	protected void changePin(String newPin){
 		currentUser.changePin(newPin);
 	}
 }

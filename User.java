@@ -88,7 +88,7 @@ public class User {
 	 * Get the user ID number
 	 * @return	the uuid
 	 */
-	public String getUUID() {
+	protected String getUUID() {
 		return this.uuid;
 	}
 	
@@ -96,7 +96,7 @@ public class User {
 	 * Add an account for the user.
 	 * @param anAcct	the account to add
 	 */
-	public void addAccount(Account anAcct) {
+	protected void addAccount(Account anAcct) {
 		this.accounts.add(anAcct);
 	}
 	
@@ -104,7 +104,7 @@ public class User {
 	 * Get the number of accounts the user has.
 	 * @return	the number of accounts
 	 */
-	public int numAccounts() {
+	protected int numAccounts() {
 		return this.accounts.size();
 	}
 
@@ -113,9 +113,8 @@ public class User {
 	 * @param accountIndex	the index of the account to use
 	 * @return			the balance of the account
 	 */
-	public Account getAccount(int accountIndex){
+	protected Account getAccount(int accountIndex){
 		return accounts.get(accountIndex);
-
 	}
 	
 	/**
@@ -123,7 +122,7 @@ public class User {
 	 * @param acctIdx	the index of the account to use
 	 * @return			the balance of the account
 	 */
-	public double getAcctBalance(int acctIdx) {
+	protected double getAcctBalance(int acctIdx) {
 		return this.accounts.get(acctIdx).getBalance();
 	}
 	
@@ -132,7 +131,7 @@ public class User {
 	 * @param acctIdx	the index of the account to use
 	 * @return			the UUID of the account
 	 */
-	public String getAcctUUID(int acctIdx) {
+	protected String getAcctUUID(int acctIdx) {
 		return this.accounts.get(acctIdx).getUUID();
 	}
 	
@@ -140,7 +139,7 @@ public class User {
 	 * Print transaction history for a particular account.
 	 * @param acctIdx	the index of the account to use
 	 */
-	public void printAcctTransHistory(int acctIdx) {
+	protected void printAcctTransHistory(int acctIdx) {
 		this.accounts.get(acctIdx).getTransHistory();
 	}
 	
@@ -150,7 +149,7 @@ public class User {
 	 * @param amount	the amount of the transaction
 	 * @param memo		the memo of the transaction
 	 */
-	public void addAcctTransaction(int acctIdx, double amount, String memo) {
+	protected void addAcctTransaction(int acctIdx, double amount, String memo) {
 		this.accounts.get(acctIdx).addTransaction(amount, memo);
 	}
 	
@@ -159,7 +158,7 @@ public class User {
 	 * @param aPin	the pin to check
 	 * @return		whether the pin is valid or not
 	 */
-	public boolean validatePin(String aPin) {
+	protected boolean validatePin(String aPin) {
 		
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
@@ -176,7 +175,7 @@ public class User {
 	/**
 	 * Print summaries for the accounts of this user.
 	 */
-	public String getAccountsSummary() {
+	protected String getAccountsSummary() {
 		String summary = String.format("\n%s %s's accounts summary\n", firstName, lastName);
 		
 		for (int a = 0; a < this.accounts.size(); a++) {
@@ -186,40 +185,40 @@ public class User {
 		return summary;
 	}
 
-	public double getTransferLimit() {
+	protected double getTransferLimit() {
 		return transferLimit;
 	}
 
-	public void setTransferLimit(double transferLimit) {
+	protected void setTransferLimit(double transferLimit) {
 		this.transferLimit = transferLimit;
 	}
 
-	public double getExternalTransferLimit() {
+	protected double getExternalTransferLimit() {
 		return externalTransferLimit;
 	}
 
-	public void setExternalTransferLimit(double externalTransferLimit) {
+	protected void setExternalTransferLimit(double externalTransferLimit) {
 		this.externalTransferLimit = externalTransferLimit;
 	}
 
-	public double getWithdrawalLimit() {
+	protected double getWithdrawalLimit() {
 		return withdrawalLimit;
 	}
 
-	public void setWithdrawalLimit(double withdrawalLimit) {
+	protected void setWithdrawalLimit(double withdrawalLimit) {
 		this.withdrawalLimit = withdrawalLimit;
 	}
 
 	@Override
 	public String toString() {
-  	return getClass().getSimpleName() + "[name=" + firstName + "]";
+  		return getClass().getSimpleName() + "[name=" + firstName + "]";
 	}
 
-	public String getName() {
+	protected String getName() {
 		return String.format("%s %s", firstName, lastName);
 	}
 
-	public void changePin(String newPin){
+	protected void changePin(String newPin){
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
 			this.pinHash = md.digest(newPin.getBytes());
