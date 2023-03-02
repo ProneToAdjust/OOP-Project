@@ -59,9 +59,9 @@ public class ATM {
 			
 			System.out.printf("\n\nWelcome to %s\n\n", theBank.getName());		
 			System.out.print("Enter user ID: ");
-			userID = this.scanner.nextLine();
+			userID = this.scanner.next();
 			System.out.print("Enter pin: ");
-			pin = this.scanner.nextLine();
+			pin = this.scanner.next();
 
 			loginResult = controller.loginUser(theBank, userID, pin);
 			if (loginResult == false) {
@@ -314,6 +314,7 @@ public class ATM {
 
 			else {
 				System.out.println("Invalid input. Please try again");
+				return;
 			}
 		} while (typeTransfer < 0 || typeTransfer > 2);
 	}
@@ -371,7 +372,7 @@ public class ATM {
 			if (typeTransfer < 1 || typeTransfer > 2 ) {
 				System.out.println("Invalid option. Please try again.");
 			}
-		} while (typeTransfer < 0 || typeTransfer > 2 );
+		} while (typeTransfer < 1 || typeTransfer > 2 );
 		return typeTransfer;
 	}
 
