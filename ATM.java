@@ -188,7 +188,7 @@ public class ATM {
 			System.out.printf("Enter the amount to withdraw (max $%.2f): $", withdrawalLimit);
 			amount = scanner.nextDouble();
 
-			if (amount <= 0) {
+			if (amount < 0) {
 				System.out.println("Amount must be greater than zero.");
 			} else if (amount > accountBal) {
 				System.out.printf("Amount must not be greater than balance " + "of $%.02f.\n", accountBal);
@@ -196,9 +196,10 @@ public class ATM {
 				System.out.printf("Amount must not be greater than withdrawal limit " + "of $%.02f.\n", withdrawalLimit);
 			}
 
-		} while (amount <= 0 || amount > accountBal || amount > withdrawalLimit);
+		} while (amount < 0 || amount > accountBal || amount > withdrawalLimit);
 
-		controller.withdrawFunds(selectedAcc, amount, "Withdrawal");
+		if(amount !=0)
+			controller.withdrawFunds(selectedAcc, amount, "Withdrawal");
 	}
 
 	private void depositFundsMenu() {
@@ -216,12 +217,13 @@ public class ATM {
 		do {
 			System.out.printf("Enter the amount to deposit: $");
 			amount = scanner.nextDouble();
-			if (amount <= 0) {
+			if (amount < 0) {
 				System.out.println("Amount must be greater than zero.");
 			} 
-		} while (amount <= 0);
+		} while (amount < 0);
 
-		controller.depositFunds(selectedAcc, amount, "Deposit");
+		if(amount != 0)
+			controller.depositFunds(selectedAcc, amount, "Deposit");
 	}
 
 	private void transferFundsMenu(Bank theBank) {
@@ -263,7 +265,7 @@ public class ATM {
 
 					transferAmt = scanner.nextDouble();
 
-					if (transferAmt <= 0) {
+					if (transferAmt < 0) {
 						System.out.println("Amount must be greater than zero.");
 					} else if (transferAmt > acctBal) {
 						System.out.printf("Amount must not be greater than balance " + "of $%.2f.\n", acctBal);
@@ -272,9 +274,10 @@ public class ATM {
 								transferLimit);
 					}
 
-				} while (transferAmt <= 0 || transferAmt > acctBal || transferAmt > transferLimit);
+				} while (transferAmt < 0 || transferAmt > acctBal || transferAmt > transferLimit);
 
-				controller.transferFunds(fromAcc, toAcc, transferAmt);
+				if(transferAmt != 0)
+					controller.transferFunds(fromAcc, toAcc, transferAmt);
 			}
 
 			else if (typeTransfer == 2) {
@@ -294,7 +297,7 @@ public class ATM {
 
 					transferAmt = scanner.nextDouble();
 
-					if (transferAmt <= 0) {
+					if (transferAmt < 0) {
 						System.out.println("Amount must be greater than zero.");
 					} else if (transferAmt > acctBal) {
 						System.out.printf("Amount must not be greater than balance " + "of $%.2f.\n", acctBal);
@@ -303,9 +306,10 @@ public class ATM {
 								externalTransferLimit);
 					}
 
-				} while (transferAmt <= 0 || transferAmt > acctBal || transferAmt > externalTransferLimit);
+				} while (transferAmt < 0 || transferAmt > acctBal || transferAmt > externalTransferLimit);
 
-				controller.transferExtFunds(fromAcc, toAcc, transferAmt, theBank);
+				if(transferAmt!= 0)
+					controller.transferExtFunds(fromAcc, toAcc, transferAmt, theBank);
 			}
 
 			else {
