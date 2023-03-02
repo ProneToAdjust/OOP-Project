@@ -172,7 +172,6 @@ public class ATM {
 		int selectedAcc;
 		double amount;
 		double accountBal;
-		String memo;
 		double withdrawalLimit;
 
 		System.out.println("Withdraw funds");
@@ -198,18 +197,13 @@ public class ATM {
 			}
 
 		} while (amount < 0 || amount > accountBal || amount > withdrawalLimit);
-		
-		// get a memo
-		System.out.print("Enter a memo: ");
-		memo = scanner.next();
 
-		controller.withdrawFunds(selectedAcc, amount, memo);
+		controller.withdrawFunds(selectedAcc, amount, "Withdrawal");
 	}
 
 	private void depositFundsMenu() {
 		int selectedAcc;
 		double amount;
-		String memo;
 
 		System.out.println("Deposit funds");
 
@@ -226,12 +220,8 @@ public class ATM {
 				System.out.println("Amount must be greater than zero.");
 			} 
 		} while (amount < 0);
-		
-		// get a memo
-		System.out.print("Enter a memo: ");
-		memo = scanner.next();
 
-		controller.depositFunds(selectedAcc, amount, memo);
+		controller.depositFunds(selectedAcc, amount, "Deposit");
 	}
 
 	private void transferFundsMenu(Bank theBank) {
