@@ -474,25 +474,15 @@ public class ATM {
 		System.out.printf("Please re-enter the new pin: ");
 		rePin = scanner.next();
 
-		if(!newPin.equals(rePin)){
-			System.out.println();
-			System.out.println("New pin does not match.");
-			System.out.println();
-			settingsMenu();
-		}
+		if(!newPin.equals(rePin))
+			System.out.println("\nNew pin does not match.\n");
 		else if(controller.validatePin(currentPin)){
 			controller.changePin(newPin);
-			System.out.println();
-            System.out.println("Pin has been changed.");
-			System.out.println();
-            settingsMenu();
+            System.out.println("\nPin has been changed.\n");
 		}
-		else{
-			System.out.println();
-			System.out.println("Invalid pin. Please try again.");
-			System.out.println();
-            settingsMenu();
-		}
-
+		else
+			System.out.println("\nInvalid pin. Please try again.\n");
+		
+		settingsMenu();
 	}
 }
