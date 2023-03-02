@@ -218,4 +218,14 @@ public class User {
 	public String getName() {
 		return String.format("%s %s", firstName, lastName);
 	}
+
+	public void changePin(String newPin){
+		try {
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			this.pinHash = md.digest(newPin.getBytes());
+		} catch (Exception e) {
+			System.err.println("error, caught exeption : " + e.getMessage());
+			System.exit(1);
+		}
+	}
 }

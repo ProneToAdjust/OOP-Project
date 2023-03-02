@@ -117,4 +117,12 @@ public class Controller {
 	public String getUserName() {
 		return currentUser.getName();
 	}
+
+	public boolean validatePin(String pin){
+		return currentUser.validatePin(pin);
+	}
+
+	public void changePin(String newPin){
+		currentUser.changePin(newPin);
+	}
 }

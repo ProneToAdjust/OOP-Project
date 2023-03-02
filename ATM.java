@@ -384,19 +384,19 @@ public class ATM {
 			System.out.println("  1) Transfer limit");
 			System.out.println("  2) External transfer limit");
 			System.out.println("  3) Withdrawal limit");
-			System.out.println("  4) Exit settings");
+			System.out.println("  4) Change Pin No.");
+			System.out.println("  5) Exit settings");
 			System.out.println();
 			System.out.print("Enter choice: ");
 			choice = this.scanner.nextInt();
 			
-			if (choice < 1 || choice > 4) {
-				System.out.println("Invalid choice. Please choose 1-4.");
+			if (choice < 1 || choice > 5) {
+				System.out.println("Invalid choice. Please choose 1-5.");
 			}
 			
-		} while (choice < 1 || choice > 4);
+		} while (choice < 1 || choice > 5);
 
 		switch (choice) {
-		
 			case 1:
 				changeTransferLimitMenu();
 				break;
@@ -407,8 +407,11 @@ public class ATM {
 				changeWithdrawalLimitMenu();
 				break;
 			case 4:
+				changePinNoMenu();
 				break;
-			}
+			case 5:
+                break;
+		}
 	}
 	
 	private void changeTransferLimitMenu() {
@@ -457,5 +460,38 @@ public class ATM {
 		controller.changeWithdrawalLimit(amount);
 
 		System.out.printf("Withdrawal limit has been set to $%.2f", amount);
+	}
+
+	private void changePinNoMenu() {
+		String currentPin, newPin, rePin;
+
+		System.out.println();
+		System.out.printf("Please enter the current pin: ");
+		currentPin = scanner.next();
+		System.out.printf("Please enter the new pin: ");
+		newPin = scanner.next();
+		System.out.printf("Please re-enter the new pin: ");
+		rePin = scanner.next();
+
+		if(!newPin.equals(rePin)){
+			System.out.println();
+			System.out.println("New pin does not match.");
+			System.out.println();
+			settingsMenu();
+		}
+		else if(controller.validatePin(currentPin)){
+			controller.changePin(newPin);
+			System.out.println();
+            System.out.println("Pin has been changed.");
+			System.out.println();
+            settingsMenu();
+		}
+		else{
+			System.out.println();
+			System.out.println("Invalid pin. Please try again.");
+			System.out.println();
+            settingsMenu();
+		}
+
 	}
 }
