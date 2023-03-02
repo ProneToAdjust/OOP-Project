@@ -177,21 +177,26 @@ public class Bank {
 	// if uuid is correct, return bank account index
 	// if not, return a invalid message
 	protected int selectBankAcc(String uuid) {
+		boolean bankAccountFound = false;
+		int bankAccIndex = 0;
 		ArrayList<String> uuidList = new ArrayList<String>();
-		int result = -1;
 		for (int i = 0; i < this.accounts.size(); i++) {
 			String testUuid = this.accounts.get(i).getUUID();
 			uuidList.add(testUuid);
-			//System.out.println(uuidList);
-			if (uuid.equals(testUuid)) {
-				result = i;
+		}
+		do {
+			if (!uuidList.contains(uuid)) {
+				System.out.println("Bank account not found, please try again.");
 				break;
+			} 
+			else {
+				bankAccountFound = true;
+				bankAccIndex = uuidList.indexOf(uuid);
+				return bankAccIndex;
 			}
-		}
-		if (result == -1) {
-			System.out.println("Bank account not found, please try again");
-		}
-		return result;
+		} while (!bankAccountFound);
+
+		return -1;
 	}
 
 	protected void addAcctTransaction(int index, double amount, String memo) {

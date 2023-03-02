@@ -251,7 +251,7 @@ public class ATM {
 		typeTransfer = getTypeTransfer();
 		// check using do while loop for the type of transfer user want to perform
 		// if user want to do internal, typetransfer == 1 and the internal methods will run
-		// if user want to do external, typetransfer == 2 and the externam transfer methods will run
+		// if user want to do external, typetransfer == 2 and the external transfer methods will run
 		
 		do {
 			if (typeTransfer == 1) {
@@ -354,6 +354,12 @@ public class ATM {
 			}
 		} while (uuid.length() != 10);
 
+		if (controller.getSelectedBankIndex(theBank, uuid) == -1)
+		{
+			System.out.println("Please try again!");
+			selectExtAccountMenu(theBank);
+		}
+
 		return controller.getSelectedBankIndex(theBank, uuid);
 	}
 
@@ -363,10 +369,10 @@ public class ATM {
 		int typeTransfer;
 		do {
 			// prompts user to check for the type of transfer
-			System.out.printf("Enter the number (1-2) for the type of transfer " + 
-			"you would like to perform \n");
 			System.out.printf("1. Internal\n");
 			System.out.printf("2. External (to 3rd party accounts)\n");
+			System.out.printf("Enter the number (1-2) for the type of transfer " + 
+			"you would like to perform: ");
 			typeTransfer = scanner.nextInt();
 			if (typeTransfer < 1 || typeTransfer > 2 ) {
 				System.out.println("Invalid option. Please try again.");
