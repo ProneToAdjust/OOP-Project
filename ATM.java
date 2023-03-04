@@ -430,13 +430,13 @@ public class ATM {
 
 		switch (choice) {
 			case 1:
-				changeTransferLimitMenu();
+                changeLimitMenu("transfer");
 				break;
 			case 2:
-				changeExternalTransferLimitMenu();
+                changeLimitMenu("external transfer");
 				break;
 			case 3:
-				changeWithdrawalLimitMenu();
+                changeLimitMenu("withdrawal");
 				break;
 			case 4:
 				changePinNoMenu();
@@ -448,34 +448,14 @@ public class ATM {
 		}
 	}
 	
-	private void changeTransferLimitMenu() {
+	private void changeLimitMenu(String limitType) {
 		double amount = -1;
 
 		do {
-			System.out.printf("Enter new transfer limit: $");
+			System.out.printf("Enter new " + limitType + " limit: $");
 			try{
 				amount = Double.parseDouble(this.scanner.nextLine());
-                if (amount < 0)
-                    System.out.println("Amount must be greater than zero.");
-			}
-			catch(Exception e) {
-                System.out.println("Invalid choice. Please input a number.");
-            }
-		} while (amount < 0);
-		
-		controller.changeTransferLimit(amount);
-
-		System.out.printf("Transfer limit has been set to $%.2f", amount);
-	}
-
-	private void changeExternalTransferLimitMenu() {
-		double amount = -1;
-
-		do {
-			System.out.printf("Enter new external transfer limit: $");
-			try{
-				amount = Double.parseDouble(this.scanner.nextLine());
-                if (amount < 0)
+                if (amount <= 0)
                     System.out.println("Amount must be greater than zero.");
 			}
 			catch(Exception e) {
@@ -483,29 +463,21 @@ public class ATM {
             }
 		} while (amount <= 0);
 		
-		controller.changeExternalTransferLimit(amount);
+		switch(limitType){
+			case "transfer":
+				controller.changeTransferLimit(amount);
+                break;
+            case "external transfer":
+				controller.changeExternalTransferLimit(amount);
+                break;
+            case "withdrawal":
+                controller.changeWithdrawalLimit(amount);
+                break;
+            default:
+                throw new IllegalAccessError("String limitType was invalid");
+		}
 
-		System.out.printf("Transfer limit has been set to $%.2f", amount);
-	}
-
-	private void changeWithdrawalLimitMenu() {
-		double amount = -1;
-
-		do {
-			System.out.printf("Enter new withdrawal limit: $");
-			try{
-				amount = Double.parseDouble(this.scanner.nextLine());
-                if (amount < 0)
-                    System.out.println("Amount must be greater than zero.");
-			}
-			catch(Exception e) {
-                System.out.println("Invalid choice. Please input a number.");
-            }
-		} while (amount <= 0);
-		
-		controller.changeWithdrawalLimit(amount);
-
-		System.out.printf("Withdrawal limit has been set to $%.2f", amount);
+		System.out.printf("New "+ limitType +" limit has been set to $%.2f", amount);
 	}
 
 	private void changePinNoMenu() {
