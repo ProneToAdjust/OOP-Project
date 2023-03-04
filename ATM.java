@@ -493,6 +493,8 @@ public class ATM {
 
 		if(!newPin.equals(rePin))
 			System.out.println("\nNew pin does not match.\n");
+		else if(newPin == "")
+			System.out.println("\nNew pin cannot be empty.\n");
 		else if(controller.validatePin(currentPin)){
 			controller.changePin(newPin);
             System.out.println("\nPin has been changed.\n");
