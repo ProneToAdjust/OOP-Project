@@ -2,9 +2,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ATM {
-	
+	private Controller controller;
+	private Scanner scanner;
+
 	public static void main(String[] args) {
-		
 		ATM atm = new ATM();
 		
 		// init Bank
@@ -24,31 +25,23 @@ public class ATM {
 		
 		// continue looping forever
 		while (true) {
-			
 			// stay in login prompt until successful login
 			atm.loginMenu(bank);
 			// stay in main menu until user quits
 			atm.mainMenu(bank);
-			
 		}
-
 	}
-
-	private Controller controller;
-	private Scanner scanner;
 
 	public ATM() {
 		this.scanner = new Scanner(System.in);
 		this.controller = new Controller();
 	}
 
-	/**
-	 * Print the ATM's login menu.
+	/** Print the ATM's login menu.
 	 * @param theBank	the Bank object whose accounts to use
 	 * @param sc		the Scanner objec to use for user input
 	 */
 	private void loginMenu(Bank theBank) {
-		
 		// inits
 		String userID;
 		String pin;
@@ -56,7 +49,6 @@ public class ATM {
 		
 		// prompt user for user ID/pin combo until a correct one is reached
 		do {
-			
 			System.out.printf("\n\nWelcome to %s\n\n", theBank.getName());		
 			System.out.print("Enter user ID: ");
 			userID = this.scanner.nextLine();
@@ -68,16 +60,12 @@ public class ATM {
 				System.out.println("Incorrect user ID/pin combination. " + 
 						"Please try again");
 			}
-			
-		} while(loginResult == false); 	// continue looping until we have a  
-									// successful login
+		} while(loginResult == false); 	// continue looping until we have a successful login
 	}
 	
-	/**
-	 * Print the ATM's menu for user actions.
+	/** Print the ATM's menu for user actions.
 	 */
 	private void mainMenu(Bank theBank) {
-		
 		// init
 		int choice = -1;
 
@@ -85,7 +73,6 @@ public class ATM {
 		
 		// user menu
 		do {
-			
 			System.out.println("\n\nWhat would you like to do?");
 			System.out.println("  1) Show Account information");
 			System.out.println("  2) Withdraw");
@@ -133,14 +120,15 @@ public class ATM {
 		}
 
 		// redisplay this menu unless the user wants to quit
-		if (choice != 6) {
+		if (choice != 6) 
 			this.mainMenu(theBank);
-		}
 	}
 
+	/** Prints menu for user to select if they want to display transaction history.
+	 */
 	private void showAccountInformationMenu() {
-		int accountchoice;
-		int transactionchoice = -1;
+		int accountChoice;
+		int transactionChoice = -1;
 		System.out.println(controller.getSummary());
 		
 		// prints account summary
@@ -150,23 +138,25 @@ public class ATM {
 			System.out.println("2) No");
 			System.out.printf("Enter the number (1-2): ");
 			try{
-				transactionchoice = Integer.parseInt(this.scanner.nextLine());
-				if (transactionchoice < 1 || transactionchoice > 2)
+				transactionChoice = Integer.parseInt(this.scanner.nextLine());
+				if (transactionChoice < 1 || transactionChoice > 2)
 					System.out.println("Invalid choice. Please choose 1-2.");
 			}
 			catch(Exception e) {
                 System.out.println("Invalid choice. Please input an integer.");
             }
-		} while (transactionchoice < 1 || transactionchoice > 2);
+		} while (transactionChoice < 1 || transactionChoice > 2);
 
-		if (transactionchoice == 1) {
-			accountchoice = selectAccountMenu();
-			transactionHistoryMenu(accountchoice);
-		} else if (transactionchoice == 2) {
+		if (transactionChoice == 1) {
+			accountChoice = selectAccountMenu();
+			transactionHistoryMenu(accountChoice);
+		} else if (transactionChoice == 2) {
 			System.out.println("\nExiting Account Information\n");
 		}
 	}
 
+	/** Prints the transction history of select account.
+	 */
 	private void transactionHistoryMenu(int account) {
 		// print the transaction history
 		ArrayList<String> transHistories = controller.getTransactionHistory(account);
@@ -176,9 +166,10 @@ public class ATM {
 			System.out.println(transSummary);
 		}
 		System.out.println();
-
 	}
 
+	/** Print the Withdrawal menu for user actions.
+	 */
 	private void withdrawFundsMenu() {
 		int selectedAcc;
 		double amount = -1;
@@ -211,10 +202,12 @@ public class ATM {
             }
 		} while (amount < 0 || amount > accountBal || amount > withdrawalLimit);
 
-		if(amount !=0)
+		if(amount != 0)
 			controller.withdrawFunds(selectedAcc, amount, "Withdrawal");
 	}
 
+	/** Print the Deposit menu for user actions.
+	 */
 	private void depositFundsMenu() {
 		int selectedAcc;
 		double amount = -1;
@@ -243,6 +236,8 @@ public class ATM {
 			controller.depositFunds(selectedAcc, amount, "Deposit");
 	}
 
+	/** Print the Transfer menu for user actions.
+	 */
 	private void transferFundsMenu(Bank theBank) {
 		int fromAcc;
 		int toAcc;
@@ -250,94 +245,68 @@ public class ATM {
 		double transferAmt = -1;
 		double acctBal;
 		double transferLimit;
-		double externalTransferLimit;
 
 		System.out.println("Transfer funds");
-
 		System.out.println(controller.getSummary());
-		
-		// method to get the type of transfer user has selected
 		typeTransfer = getTypeTransfer();
-		// check using do while loop for the type of transfer user want to perform
-		// if user want to do internal, typetransfer == 1 and the internal methods will run
-		// if user want to do external, typetransfer == 2 and the external transfer methods will run
 		
-		do {
-			if (typeTransfer == 1) {
+		// get account to transfer from
+		System.out.println("Account to transfer from:");
+		fromAcc = selectAccountMenu();
+		acctBal = controller.getAccountBalance(fromAcc);
 
-				// get account to transfer from
-				System.out.println("Account to transfer from:");
-				fromAcc = selectAccountMenu();
-				acctBal = controller.getAccountBalance(fromAcc);
-
+		switch(typeTransfer){
+			case 1: //internal transfer
 				// get account to transfer to
 				System.out.println("Account to transfer to");
 				toAcc = selectAccountMenu();
 
 				transferLimit = controller.getTransferLimit();
-
-				// get amount to transfer
-				do {
-					System.out.printf("Enter the amount to transfer (max $%.02f): $", transferLimit);
-					try{
-						transferAmt = Double.parseDouble(this.scanner.nextLine());
-						if (transferAmt < 0) 
-							System.out.println("Amount must be greater than zero.");
-						else if (transferAmt > acctBal) 
-							System.out.printf("Amount must not be greater than balance " + "of $%.2f.\n", acctBal);
-						else if (transferAmt > transferLimit) 
-							System.out.printf("Amount must not be greater than transfer limit " + "of $%.2f.\n",
-									transferLimit);
-					}
-					catch(Exception e) {
-                        System.out.println("Invalid choice. Please input a number.");
-                    }
-				} while (transferAmt < 0 || transferAmt > acctBal || transferAmt > transferLimit);
-
-				if(transferAmt != 0)
-					controller.transferFunds(fromAcc, toAcc, transferAmt);
-			}
-
-			else if (typeTransfer == 2) {
-				// get account to transfer from
-				System.out.println("Account to transfer from:");
-				fromAcc = selectAccountMenu();
-				acctBal = controller.getAccountBalance(fromAcc);
-
+				break;
+			case 2: //external transfer
 				// get account to transfer to
 				toAcc = selectExtAccountMenu(theBank);
+				transferLimit = controller.getExternalTransferLimit();
+				break;
+            default:
+				throw new IllegalAccessError("int typeTransfer was invalid");
+        }
 
-				externalTransferLimit = controller.getExternalTransferLimit();
-
-				// get amount to transfer
-				do {
-					System.out.printf("Enter the amount to transfer (max $%.02f): $", externalTransferLimit);
-					try{
-						transferAmt = Double.parseDouble(this.scanner.nextLine());
-						if (transferAmt < 0) 
-							System.out.println("Amount must be greater than zero.");
-						else if (transferAmt > acctBal) 
-							System.out.printf("Amount must not be greater than balance " + "of $%.2f.\n", acctBal);
-						else if (transferAmt > externalTransferLimit) 
-							System.out.printf("Amount must not be greater than transfer limit " + "of $%.2f.\n",
-									externalTransferLimit);
-					}
-					catch(Exception e) {
-                        System.out.println("Invalid choice. Please input a number.");
-                    }
-				} while (transferAmt < 0 || transferAmt > acctBal || transferAmt > externalTransferLimit);
-
-				if(transferAmt!= 0)
+		// get amount to transfer
+		do {
+			System.out.printf("Enter the amount to transfer (max $%.02f): $", transferLimit);
+			try{
+				transferAmt = Double.parseDouble(this.scanner.nextLine());
+				if (transferAmt < 0) 
+					System.out.println("Amount must be greater than zero.");
+				else if (transferAmt > acctBal) 
+					System.out.printf("Amount must not be greater than balance " + 
+					"of $%.2f.\n", acctBal);
+				else if (transferAmt > transferLimit) 
+					System.out.printf("Amount must not be greater than transfer limit " + 
+					"of $%.2f.\n", transferLimit);
+			}
+			catch(Exception e) {
+				System.out.println("Invalid choice. Please input a number.");
+			}
+		} while (transferAmt < 0 || transferAmt > acctBal || transferAmt > transferLimit);
+	
+		if(transferAmt!= 0){
+			switch(typeTransfer){
+				case 1: //internal transfer
+					controller.transferFunds(fromAcc, toAcc, transferAmt);
+    	            break;
+    	        case 2: //external transfer
 					controller.transferExtFunds(fromAcc, toAcc, transferAmt, theBank);
+    	            break;
+    	        default:
+    	            throw new IllegalAccessError("int typeTransfer was invalid");
 			}
-
-			else {
-				System.out.println("Invalid input. Please try again");
-				return;
-			}
-		} while (typeTransfer < 0 || typeTransfer > 2);
+		}
 	}
 
+	/** Prints menu for user to select internal account.
+	 */
 	private int selectAccountMenu(){
 		int selectedAcc = -1;
 		int numOfAccounts = controller.getNumberOfAccounts();
@@ -357,6 +326,8 @@ public class ATM {
 		return selectedAcc;
 	}
 
+	/** Prints menu for user to select external bank account.
+	 */
 	private int selectExtAccountMenu(Bank theBank){
 		String uuid;
 		
@@ -379,9 +350,11 @@ public class ATM {
 		return controller.getSelectedBankIndex(theBank, uuid);
 	}
 
-
-	private int getTypeTransfer()
-	{
+	/** Returns integer correlating to transfer type
+	 * 1 = Internal transfer
+	 * 2 = External transfer
+	 */
+	private int getTypeTransfer(){
 		int typeTransfer = -1;
 
 		do {
@@ -403,11 +376,12 @@ public class ATM {
 		return typeTransfer;
 	}
 
+	/** Print the Settings menu for user actions.
+	 */
 	private void settingsMenu() {
 		int choice = -1;
 
 		do {
-			
 			System.out.println("Settings");
 			System.out.println("  1) Transfer limit");
 			System.out.println("  2) External transfer limit");
@@ -425,7 +399,6 @@ public class ATM {
 			catch(Exception e) {
                 System.out.println("Invalid choice. Please input an integer.");
             }
-			
 		} while (choice < 1 || choice > 5);
 
 		switch (choice) {
@@ -448,6 +421,11 @@ public class ATM {
 		}
 	}
 	
+	/** Prints menu for user to change account limits.
+	 * - Internal transfer limit
+	 * - External transfer limit 
+	 * - Withdrawal limit
+	 */
 	private void changeLimitMenu(String limitType) {
 		double amount = -1;
 
@@ -480,6 +458,8 @@ public class ATM {
 		System.out.printf("New "+ limitType +" limit has been set to $%.2f", amount);
 	}
 
+	/** Prints menu for user to change pin
+	 */
 	private void changePinNoMenu() {
 		String currentPin, newPin, rePin;
 
