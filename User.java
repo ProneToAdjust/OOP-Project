@@ -1,8 +1,8 @@
-
+import java.io.Serializable;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 
-public class User {
+public class User implements Serializable {
 
 	/**
 	 * The first name of the user.
@@ -211,13 +211,20 @@ public class User {
 
 	@Override
 	public String toString() {
-  		return getClass().getSimpleName() + "[name=" + firstName + "]";
+  		return getClass().getSimpleName() + "[name=" + firstName + lastName + "]";
 	}
 
 	protected String getName() {
 		return String.format("%s %s", firstName, lastName);
 	}
 
+	protected String getFirstName() {
+		return this.firstName;
+	}
+	
+	protected String getLastName() {
+		return this.lastName;
+	}
 	protected void changePin(String newPin){
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");

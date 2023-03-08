@@ -1,5 +1,12 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class ATM {
 	private Controller controller;
@@ -12,16 +19,52 @@ public class ATM {
 		Bank bank = new Bank("Fleeca");//fleeca bank
 		
 		// add two users, which also creates a Savings account
-		User testUser = bank.addUser("Sibei", "Suei", "4444");
-		User testUser2 = bank.addUser("Ryan", "Ong", "5555");
+		//User testUser = new User("Sibei", "Suei", "4444", bank);
+		//User testUser2 = new User("Ryan", "Ong", "5555", bank);
 
-		// add a checking account for our user
-		Account checkingAccount = new Account("Checking", testUser, bank);
-		Account checkingAccount2 = new Account("Checking", testUser2, bank);
-		testUser.addAccount(checkingAccount);
-		testUser2.addAccount(checkingAccount2);
-		bank.addAccount(checkingAccount);
-		bank.addAccount(checkingAccount2);
+		try {
+			/*FileOutputStream f = new FileOutputStream(new File("myObjects.txt"));
+			ObjectOutputStream o = new ObjectOutputStream(f);
+
+			// Write objects to file
+			o.writeObject(testUser);
+			o.writeObject(testUser2);
+
+			o.close();
+			f.close();
+*/
+			FileInputStream fi = new FileInputStream(new File("myObjects.txt"));
+			ObjectInputStream oi = new ObjectInputStream(fi);
+
+			// Read objects
+			User user1 = (User) oi.readObject();
+			User user2 = (User) oi.readObject();
+
+			System.out.println(user1.toString());
+			System.out.println(user2.toString());
+
+			// add a checking account for our user
+			Account checkingAccount = new Account("Checking", user1, bank);
+			Account checkingAccount2 = new Account("Checking", user2, bank);
+			user1.addAccount(checkingAccount);
+			user2.addAccount(checkingAccount2);
+			bank.addAccount(checkingAccount);
+			bank.addAccount(checkingAccount2);
+
+			bank.addUser(user1.getFirstName(), user1.getLastName(), "4444");
+			bank.addUser(user2.getFirstName(), user2.getLastName(), "5555");
+
+			oi.close();
+			fi.close();
+
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found");
+		} catch (IOException e) {
+			System.out.println("Error initializing stream");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		// continue looping forever
 		while (true) {

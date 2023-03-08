@@ -1,8 +1,8 @@
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Bank {
+public class Bank implements Serializable {
 	
 	/**
 	 * The name of the bank.
