@@ -59,6 +59,7 @@ public class ATM {
 
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found");
+			createFile(bank);
 		} catch (IOException e) {
 			System.out.println("Error initializing stream");
 		} catch (ClassNotFoundException e) {
@@ -526,5 +527,28 @@ public class ATM {
 			System.out.println("\nInvalid pin. Please try again.\n");
 		
 		settingsMenu();
+	}
+
+	private static void createFile(Bank bank)
+	{
+		try{// add two users, which also creates a Savings account
+			User testUser = new User("Sibei", "Suei", "4444", bank);
+			User testUser2 = new User("Ryan", "Ong", "5555", bank);
+	
+			FileOutputStream f = new FileOutputStream(new File("myObjects.txt"));
+			ObjectOutputStream o = new ObjectOutputStream(f);
+	
+				// Write objects to file
+				o.writeObject(testUser);
+				o.writeObject(testUser2);
+	
+				o.close();
+				f.close();
+			}
+			catch (IOException e) {
+				e.printStackTrace(); 
+				// handle exception correctly.
+			}
+		
 	}
 }
