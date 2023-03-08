@@ -1,7 +1,8 @@
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Account {
+public class Account implements Serializable{
 	
 	/**
 	 * The name of the account.

@@ -14,58 +14,8 @@ public class ATM {
 
 	public static void main(String[] args) {
 		ATM atm = new ATM();
-		
-		// init Bank
-		Bank bank = new Bank("Fleeca");//fleeca bank
-		
-		// add two users, which also creates a Savings account
-		//User testUser = new User("Sibei", "Suei", "4444", bank);
-		//User testUser2 = new User("Ryan", "Ong", "5555", bank);
 
-		try {
-			/*FileOutputStream f = new FileOutputStream(new File("myObjects.txt"));
-			ObjectOutputStream o = new ObjectOutputStream(f);
-
-			// Write objects to file
-			o.writeObject(testUser);
-			o.writeObject(testUser2);
-
-			o.close();
-			f.close();
-*/
-			FileInputStream fi = new FileInputStream(new File("myObjects.txt"));
-			ObjectInputStream oi = new ObjectInputStream(fi);
-
-			// Read objects
-			User user1 = (User) oi.readObject();
-			User user2 = (User) oi.readObject();
-
-			System.out.println(user1.toString());
-			System.out.println(user2.toString());
-
-			// add a checking account for our user
-			Account checkingAccount = new Account("Checking", user1, bank);
-			Account checkingAccount2 = new Account("Checking", user2, bank);
-			user1.addAccount(checkingAccount);
-			user2.addAccount(checkingAccount2);
-			bank.addAccount(checkingAccount);
-			bank.addAccount(checkingAccount2);
-
-			bank.addUser(user1.getFirstName(), user1.getLastName(), "4444");
-			bank.addUser(user2.getFirstName(), user2.getLastName(), "5555");
-
-			oi.close();
-			fi.close();
-
-		} catch (FileNotFoundException e) {
-			System.out.println("File not found");
-			createFile(bank);
-		} catch (IOException e) {
-			System.out.println("Error initializing stream");
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Bank bank = loadFile();
 		
 		// continue looping forever
 		while (true) {
@@ -162,6 +112,8 @@ public class ATM {
 			default:
 				throw new IllegalAccessError("int choice was invalid");
 		}
+		
+		saveFile(theBank);
 
 		// redisplay this menu unless the user wants to quit
 		if (choice != 6) 
@@ -529,26 +481,78 @@ public class ATM {
 		settingsMenu();
 	}
 
-	private static void createFile(Bank bank)
+	private static void createFile()
 	{
-		try{// add two users, which also creates a Savings account
-			User testUser = new User("Sibei", "Suei", "4444", bank);
-			User testUser2 = new User("Ryan", "Ong", "5555", bank);
-	
+		Bank bank = new Bank("Fleeca");
+
+		// add two users, which also creates a Savings account
+		User testUser = bank.addUser("Sibei", "Suei", "4444");
+		User testUser2 = bank.addUser("Ryan", "Ong", "5555");
+
+		// add a checking account for our user
+		Account checkingAccount = new Account("Checking", testUser, bank);
+		Account checkingAccount2 = new Account("Checking", testUser2, bank);
+
+		testUser.addAccount(checkingAccount);
+		testUser2.addAccount(checkingAccount2);
+
+		bank.addAccount(checkingAccount);
+		bank.addAccount(checkingAccount2);
+
+		try{
 			FileOutputStream f = new FileOutputStream(new File("myObjects.txt"));
 			ObjectOutputStream o = new ObjectOutputStream(f);
 	
-				// Write objects to file
-				o.writeObject(testUser);
-				o.writeObject(testUser2);
-	
-				o.close();
-				f.close();
+			// Write objects to file
+			o.writeObject(bank);
+
+			o.close();
+			f.close();
 			}
 			catch (IOException e) {
 				e.printStackTrace(); 
 				// handle exception correctly.
 			}
-		
+	}
+
+	private static Bank loadFile(){
+		Bank bank = null;
+		try {
+			FileInputStream fi = new FileInputStream(new File("myObjects.txt"));
+			ObjectInputStream oi = new ObjectInputStream(fi);
+
+			// Read objects
+			bank = (Bank) oi.readObject();
+
+			oi.close();
+			fi.close();
+
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found");
+			createFile();
+			bank = loadFile();
+		} catch (IOException e) {
+			System.out.println("Error initializing stream");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		return bank;
+	}
+
+	private static void saveFile(Bank bank) {
+		try {
+			FileOutputStream f = new FileOutputStream(new File("myObjects.txt"));
+			ObjectOutputStream o = new ObjectOutputStream(f);
+
+			// Write objects to file
+			o.writeObject(bank);
+
+			o.close();
+			f.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			// handle exception correctly.
+		}
 	}
 }
