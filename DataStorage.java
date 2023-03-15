@@ -7,7 +7,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class DataStorage {
-    private static void createFile() {
+    private static String FILENAME = "BankDB";
+
+    // Creates a db file with sample data if none is found in the current directory
+    private static void createSampleDB() {
         Bank bank = new Bank("Fleeca");
 
         // add two users, which also creates a Savings account
@@ -25,7 +28,7 @@ public class DataStorage {
         bank.addAccount(checkingAccount2);
 
         try {
-            FileOutputStream f = new FileOutputStream(new File("myObjects.txt"));
+            FileOutputStream f = new FileOutputStream(new File(FILENAME));
             ObjectOutputStream o = new ObjectOutputStream(f);
 
             // Write objects to file
@@ -35,17 +38,19 @@ public class DataStorage {
             f.close();
         } catch (IOException e) {
             e.printStackTrace();
-            // handle exception correctly.
         }
     }
 
-    public static Bank loadFile() {
+    /**
+     * @return Bank
+     *         Reads and returns the bank object from the db file
+     */
+    public static Bank loadDatabase() {
         Bank bank = null;
         try {
-            FileInputStream fi = new FileInputStream(new File("myObjects.txt"));
+            FileInputStream fi = new FileInputStream(new File(FILENAME));
             ObjectInputStream oi = new ObjectInputStream(fi);
 
-            // Read objects
             bank = (Bank) oi.readObject();
 
             oi.close();
@@ -53,8 +58,8 @@ public class DataStorage {
 
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
-            createFile();
-            bank = loadFile();
+            createSampleDB();
+            bank = loadDatabase();
         } catch (IOException e) {
             System.out.println("Error initializing stream");
         } catch (ClassNotFoundException e) {
@@ -64,9 +69,13 @@ public class DataStorage {
         return bank;
     }
 
-    public static void saveFile(Bank bank) {
+    /**
+     * @param bank
+     *             Updates the db file with the input bank object
+     */
+    public static void saveDatabase(Bank bank) {
         try {
-            FileOutputStream f = new FileOutputStream(new File("myObjects.txt"));
+            FileOutputStream f = new FileOutputStream(new File(FILENAME));
             ObjectOutputStream o = new ObjectOutputStream(f);
 
             // Write objects to file
@@ -76,7 +85,6 @@ public class DataStorage {
             f.close();
         } catch (IOException e) {
             e.printStackTrace();
-            // handle exception correctly.
         }
     }
 }
