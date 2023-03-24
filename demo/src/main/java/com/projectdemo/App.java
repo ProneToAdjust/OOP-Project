@@ -55,6 +55,8 @@ public class App extends Application {
 }
 
 private int selectAccountMenu() {
+    //label for user accounts summary
+    Label summaryLabel = new Label(controller.getSummary());
     int numOfAccounts = controller.getNumberOfAccounts();
     final int[] selectedAcc = {-1};
     //initialise choicebox to select accounts
@@ -78,7 +80,7 @@ private int selectAccountMenu() {
                     stage.close();
                 }
             } else {
-                Alert alert = new Alert(Alert.AlertType.WARNING, "Please select an account number.");
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Please select an account.");
                 alert.showAndWait();
             }
         } catch (NumberFormatException e) {
@@ -88,7 +90,7 @@ private int selectAccountMenu() {
     });
     //initialise the vbox for formatting
     //the scene and the stage for the javafx gui
-    VBox vBox = new VBox(new Label(String.format("Select an account number (1-%d):", numOfAccounts)), accountChoiceBox, selectButton);
+    VBox vBox = new VBox(summaryLabel, new Label(String.format("Select an account number (1-%d):", numOfAccounts)), accountChoiceBox, selectButton);
     vBox.setAlignment(Pos.CENTER);
     vBox.setSpacing(10);
     Scene scene = new Scene(vBox, 300, 200);
