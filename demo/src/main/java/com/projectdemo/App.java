@@ -57,7 +57,7 @@ public class App extends Application {
 			app.loginMenu(bank);
 			// stay in main menu until user quits
 			showQuit = app.mainMenu(bank, primaryStage);
-        } while (!showQuit);
+        } while(true);
 }
 
 private int selectAccountMenu() {
@@ -252,8 +252,9 @@ private int selectAccountMenu() {
             System.out.println("Successfully logged out");
             DataStorage.saveDatabase(theBank);
             isClosed.set(true);
+            Stage stage = (Stage) logoutButton.getScene().getWindow();
+            stage.close();
             primaryStage.close();
-            Platform.exit();
         });
     
         // create scene and window/stage
