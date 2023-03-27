@@ -6,31 +6,11 @@
     "configurations": [
         {
             "type": "java",
-            "name": "testJava",
-            "request": "launch",
-            "mainClass": "com.projectdemo.testJava",
-            "projectName": "demo"
-        },
-        {
-            "type": "java",
-            "name": "Launch Current File",
-            "request": "launch",
-            "mainClass": "${file}"
-        },
-        {
-            "type": "java",
             "name": "App",
             "request": "launch",
             "mainClass": "com.projectdemo.App",
             "projectName": "demo",
-            "vmArgs": "--module-path \"C:/Users/Yao Teck/OOP Project w db outside/OOP-Project/javafx-sdk-19.0.2.1/lib\" --add-modules javafx.controls,javafx.fxml"
-        },
-        {
-            "type": "java",
-            "name": "Launch App",
-            "request": "launch",
-            "mainClass": "hellofx.Main",
-            "vmArgs": "--module-path \"C:/Users/Yao Teck/Downloads/javafx-sdk-17.0.1/lib\" --add-modules javafx.controls,javafx.fxml"
+            "vmArgs": "--module-path \"C:/Users/Yao Teck/OOP Project w db outside/OOP-Project/javafx-sdk-19.0.2.1/lib\" --add-modules javafx.controls,javafx.fxml,javafx.media,javafx.graphics"
         }
     ]
 }

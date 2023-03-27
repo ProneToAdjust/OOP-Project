@@ -1,5 +1,6 @@
 package com.projectdemo;
 
+import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -9,19 +10,25 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
 import java.util.ArrayList;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Modality;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+import javafx.scene.control.Label;
+
 import javafx.event.ActionEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -29,7 +36,6 @@ import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
 
 import javafx.application.Platform;
-
 
 public class App extends Application {
 
@@ -88,6 +94,7 @@ private int selectAccountMenu() {
             alert.showAndWait();
         }
     });
+
     //initialise the vbox for formatting
     //the scene and the stage for the javafx gui
     VBox vBox = new VBox(summaryLabel, new Label(String.format("Select an account number (1-%d):", numOfAccounts)), accountChoiceBox, selectButton);
@@ -97,9 +104,13 @@ private int selectAccountMenu() {
     Stage stage = new Stage();
     stage.setScene(scene);
     stage.showAndWait();
+    // add the following code to prevent stage from closing if no account selected
     stage.setOnCloseRequest(event -> {
-        event.consume();
-        Platform.exit();
+        if (accountChoiceBox.getSelectionModel().isEmpty()) {
+            event.consume();
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Please select an account.");
+            alert.showAndWait();
+        }
     });
     return selectedAcc[0];
 }
@@ -240,9 +251,9 @@ private int selectAccountMenu() {
         logoutButton.setOnAction(event -> {
             System.out.println("Successfully logged out");
             DataStorage.saveDatabase(theBank);
-            Platform.exit();
             isClosed.set(true);
             primaryStage.close();
+            Platform.exit();
         });
     
         // create scene and window/stage
@@ -254,7 +265,7 @@ private int selectAccountMenu() {
         //supposedly close the gui but it's not rly working??
         stage.setOnCloseRequest(event -> {
             event.consume();
-            Platform.exit();
+            primaryStage.close();
         });
 
         if (isClosed.get()) {
@@ -374,10 +385,20 @@ private int selectAccountMenu() {
                 } else {
                     if (amount[0] != 0) {
                         controller.withdrawFunds(selectedAcc, amount[0], "Withdrawal");
-                        Alert alert = new Alert(AlertType.INFORMATION);
-                        alert.setHeaderText("Amount withdrawn successfully.");
-                        alert.showAndWait();
-                        primaryStage.close();
+                        // Pause the timeline for 5 seconds (5000 milliseconds)
+                        PauseTransition delay = new PauseTransition(Duration.millis(5000));
+                            delay.setOnFinished(event -> {
+                                // Once the delay is complete, show an alert that the withdrawal is successful
+                                Alert alert = new Alert(AlertType.INFORMATION);
+                                alert.setHeaderText("Amount withdrawn successfully.");
+                                alert.show();
+                                primaryStage.close();
+                            });
+
+                            // Call the loadingPage method outside the PauseTransition block
+                            loadingPage(primaryStage);
+
+                            delay.play(); // Start the PauseTransition delay 
                     }
                 }
             } catch (NumberFormatException ex) {
@@ -436,11 +457,22 @@ private int selectAccountMenu() {
                     alert.showAndWait();
                 } else {
                     controller.depositFunds(selectedAcc, amount, "Deposit");
-                    Alert alert = new Alert(AlertType.INFORMATION);
-                    alert.setHeaderText("Deposit Successful");
-                    alert.setContentText(String.format("Amount $%.02f deposited successfully to account.", amount));
-                    alert.showAndWait();
-                    primaryStage.close();
+                    // Pause the timeline for 5 seconds (5000 milliseconds)
+                    PauseTransition delay = new PauseTransition(Duration.millis(5000));
+                    delay.setOnFinished(event2 -> {
+                        // Once the delay is complete, show an alert that the withdrawal is successful
+                        Alert alert = new Alert(AlertType.INFORMATION);
+                        alert.setHeaderText("Deposit Successful");
+                        alert.setContentText(String.format("Amount $%.02f deposited successfully to account.", amount));
+                        alert.show();
+                        primaryStage.close();
+                    });
+
+                    // Call the loadingPage method outside the PauseTransition block
+                    loadingPage(primaryStage);
+
+                    delay.play(); // Start the PauseTransition delay 
+                    
                 }
             } catch (NumberFormatException e) {
                 Alert alert = new Alert(AlertType.WARNING);
@@ -461,6 +493,11 @@ private int selectAccountMenu() {
         Scene depositFundsScene = new Scene(vbox, 400, 300);
         primaryStage.setScene(depositFundsScene);
         primaryStage.show();
+
+        primaryStage.setOnCloseRequest(event -> {
+            event.consume();
+            primaryStage.close();
+        });
     }
 
     private void transferFundsMenu(Bank theBank) {
@@ -758,6 +795,30 @@ private int selectAccountMenu() {
                 }
             }
         }
+    }
+
+    private void loadingPage(Stage primaryStage) {
+        // Create a label with the loading message
+        Label loadingLabel = new Label("Loading...");
+        Media sound = new Media(getClass().getResource("moneycountingsound.mp3").toExternalForm());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
+        Image gif = new Image(getClass().getResourceAsStream("moneycounting.gif"));
+        ImageView gifView = new ImageView(gif);
+        // Create a StackPane to center the label
+        StackPane root = new StackPane();
+        root.getChildren().add(loadingLabel);
+        root.getChildren().add(gifView);
+
+        // Create the loading scene
+        Scene loadingScene = new Scene(root, 300, 200);
+
+        // Set the loading scene as the primary stage scene
+        primaryStage.setScene(loadingScene);
+        primaryStage.setTitle("Loading...");
+
+        // Show the primary stage
+        primaryStage.show();
     }
     
 
