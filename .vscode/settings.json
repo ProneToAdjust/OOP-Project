@@ -1,11 +1,13 @@
 {
     "java.project.sourcePaths": [
         "src",
-        "javafx-sdk-19.0.2.1\\lib"
+        "javafx-sdk-19.0.2.1\\lib",
+        "junit\\lib"
     ],
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
         "<JavaFX_lib_path>/**/*.jar",
+        "junit/lib/*.jar"
     ],
     "java.configuration.updateBuildConfiguration": "interactive"
 }
