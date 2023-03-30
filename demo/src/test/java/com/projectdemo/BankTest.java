@@ -1,6 +1,7 @@
 package com.projectdemo;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -15,7 +16,7 @@ public class BankTest {
         bank = new Bank("Fleeca");
 
         // add two users, which also creates a Savings account
-        testUser = bank.addUser("Jasmine", "Ng", "6969");
+        testUser = bank.addUser("Jasmine", "Ng", "8831");
 
         // add a checking account for our user
         checkingAccount = new Account("Checking", testUser, bank);
@@ -26,6 +27,35 @@ public class BankTest {
     }
 
     @Test
+    public void getNewUserUUIDTest() {
+        sampleDB();
+        for(int x=1;x<1000;x++){
+            assertNotEquals(testUser.getUUID(), bank.getNewUserUUID());
+        }
+    }
+    
+    @Test
+    public void getNewAccountUUIDTest() {
+        sampleDB();
+        for(int x=1;x<1000;x++){
+            assertNotEquals(checkingAccount.getUUID(), bank.getNewAccountUUID());
+        }
+    }
+
+    @Test
+    public void userLoginTest(){
+        sampleDB();
+        User invalidUser0 = bank.userLogin("", "");
+        assertEquals(null, invalidUser0);
+        User invalidUser1 = bank.userLogin("", "8831");
+        assertEquals(null, invalidUser1);
+        User invalidUser2 = bank.userLogin(testUser.getUUID(), "");
+        assertEquals(null, invalidUser2);
+        User validUser = bank.userLogin(testUser.getUUID(), "8831");
+        assertEquals(testUser, validUser);
+    }
+
+    @Test
     public void getNameTest(){
         sampleDB();
         String name = bank.getName();
@@ -33,10 +63,13 @@ public class BankTest {
     }
 
     @Test
-    public void getUsersTest(){
+    public void getAndAddUsersTest(){
         sampleDB();
         ArrayList<User> users = bank.getUsers();
         assertEquals(testUser , users.get(0));
+        bank.addUser("Zefrom", "Ong", "9942");
+        users = bank.getUsers();
+        assertEquals(2 , users.size());
     }
 
     @Test
