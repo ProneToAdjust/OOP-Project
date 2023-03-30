@@ -9,7 +9,7 @@ public class ATM {
 	public static void main(String[] args) {
 		ATM atm = new ATM();
 
-		Bank bank = DataStorage.loadDatabase();
+		Bank bank = atm.controller.loadDatabase();
 		
 		// continue looping forever
 		while (true) {
@@ -107,7 +107,7 @@ public class ATM {
 				throw new IllegalAccessError("int choice was invalid");
 		}
 		
-		DataStorage.saveDatabase(theBank);
+		controller.saveDatabase();
 
 		// redisplay this menu unless the user wants to quit
 		if (choice != 6) 

@@ -3,6 +3,16 @@ import java.util.ArrayList;
 
 public class Controller {
 	private User currentUser;
+	private Bank currentBank;
+
+	protected Bank loadDatabase() {
+		this.currentBank = (Bank) DataStorage.loadDatabase();
+		return currentBank;
+	}
+
+	protected void saveDatabase() {
+		DataStorage.saveDatabase(this.currentBank);
+	}
 
 	protected boolean loginUser(Bank bank, String userID, String pin) {
 		currentUser = bank.userLogin(userID, pin);
