@@ -48,13 +48,18 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         App app = new App();
-		Bank bank = DataStorage.loadDatabase();
         boolean showQuit = false;
+        boolean is_authenticated = false;
 		
 		// continue looping forever
 		do {
-			// stay in login prompt until successful login
-			app.loginMenu(bank);
+            // stay in login prompt until successful login
+            Bank bank = DataStorage.loadDatabase();
+			is_authenticated = app.loginMenu(bank);
+
+            if(!is_authenticated){
+                break;
+            }
 			// stay in main menu until user quits
 			showQuit = app.mainMenu(bank, primaryStage);
         } while(true);
@@ -115,7 +120,8 @@ private int selectAccountMenu() {
     return selectedAcc[0];
 }
 
-    private void loginMenu(Bank theBank) {
+    private boolean loginMenu(Bank theBank) {
+        AtomicBoolean is_authenticated = new AtomicBoolean(false);
     
         // create UI components
         Label bankNameLabel = new Label("Welcome to " + theBank.getName());
@@ -151,6 +157,7 @@ private int selectAccountMenu() {
     
             final Boolean loginResult = controller.loginUser(theBank, userID, pin);
             if (loginResult) {
+                is_authenticated.set(true);
                 stage.close();
             } else {
                 errorLabel.setText("Incorrect user ID/pin combination. Please try again.");
@@ -164,6 +171,7 @@ private int selectAccountMenu() {
     
         // show stage
         stage.showAndWait();
+        return is_authenticated.get();
     }
 
     private boolean mainMenu(Bank theBank, Stage primaryStage) {
