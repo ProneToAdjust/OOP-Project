@@ -177,32 +177,32 @@ private int selectAccountMenu() {
     private boolean mainMenu(Bank theBank, Stage primaryStage) {
 
         // initialise all the image views for the buttons
-        Image imgView = new Image(getClass().getResourceAsStream("info.png"));
+        Image imgView = new Image(getClass().getResourceAsStream("assets/info.png"));
         ImageView viewView = new ImageView(imgView);
         viewView.setFitHeight(40);
         viewView.setPreserveRatio(true);
 
-        Image imgDep = new Image(getClass().getResourceAsStream("deposit.png"));
+        Image imgDep = new Image(getClass().getResourceAsStream("assets/deposit.png"));
         ImageView viewDep = new ImageView(imgDep);
         viewDep.setFitHeight(40);
         viewDep.setPreserveRatio(true);
 
-        Image imgQuit = new Image(getClass().getResourceAsStream("quit.png"));
+        Image imgQuit = new Image(getClass().getResourceAsStream("assets/quit.png"));
         ImageView viewQuit = new ImageView(imgQuit);
         viewQuit.setFitHeight(40);
         viewQuit.setPreserveRatio(true);
 
-        Image imgSettings = new Image(getClass().getResourceAsStream("settings.png"));
+        Image imgSettings = new Image(getClass().getResourceAsStream("assets/settings.png"));
         ImageView viewSettings = new ImageView(imgSettings);
         viewSettings.setFitHeight(40);
         viewSettings.setPreserveRatio(true);
 
-        Image imgTransfer = new Image(getClass().getResourceAsStream("transfer.png"));
+        Image imgTransfer = new Image(getClass().getResourceAsStream("assets/transfer.png"));
         ImageView viewTransfer = new ImageView(imgTransfer);
         viewTransfer.setFitHeight(40);
         viewTransfer.setPreserveRatio(true);
 
-        Image imgWithdraw = new Image(getClass().getResourceAsStream("withdraw.png"));
+        Image imgWithdraw = new Image(getClass().getResourceAsStream("assets/withdraw.png"));
         ImageView viewWithdraw = new ImageView(imgWithdraw);
         viewWithdraw.setFitHeight(40);
         viewWithdraw.setPreserveRatio(true);
@@ -809,10 +809,10 @@ private int selectAccountMenu() {
     private void loadingPage(Stage primaryStage) {
         // Create a label with the loading message
         Label loadingLabel = new Label("Loading...");
-        Media sound = new Media(getClass().getResource("moneycountingsound.mp3").toExternalForm());
+        Media sound = new Media(getClass().getResource("assets/moneycountingsound.mp3").toExternalForm());
         MediaPlayer mediaPlayer = new MediaPlayer(sound);
         mediaPlayer.play();
-        Image gif = new Image(getClass().getResourceAsStream("moneycounting.gif"));
+        Image gif = new Image(getClass().getResourceAsStream("assets/moneycounting.gif"));
         ImageView gifView = new ImageView(gif);
         // Create a StackPane to center the label
         StackPane root = new StackPane();
