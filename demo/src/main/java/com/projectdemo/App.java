@@ -653,7 +653,6 @@ private int selectAccountMenu() {
     private int selectExtAccountMenu(Bank theBank, ActionEvent event) {
         
         String uuid = "";
-        int selectedBankIndex;
         do {
             controller.checkAccUuidList(theBank);
             TextInputDialog dialog = new TextInputDialog();
@@ -662,27 +661,28 @@ private int selectAccountMenu() {
             Optional<String> result = dialog.showAndWait();
             if (result.isPresent()) {
                 uuid = result.get();
+                // check if the uuid is valid
                 if (uuid.length() != 10) {
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setContentText("Account UUID must have 10 characters. Please try again.");
                     alert.showAndWait();
+                } else if(controller.getSelectedBankIndex(theBank, uuid) == -1){
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setContentText("Please try again!");
+                    alert.showAndWait();
+                    continue;
                 }
-            } else {
+                // if the uuid is valid, return the index of the account
+                else {
+                    return controller.getSelectedBankIndex(theBank, uuid);
+                }
+             // if the user cancels the dialog, return -1
+            }  else {
                 return -1;
             }
-        } while (uuid.length() != 10);
-    
-        if (controller.getSelectedBankIndex(theBank, uuid) == -1) {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setContentText("Please try again!");
-            alert.showAndWait();
-            selectExtAccountMenu(theBank, event);
-        }
-    
-        return selectedBankIndex = controller.getSelectedBankIndex(theBank, uuid);
-        // do something with selectedBankIndex
+        } while (true);
     }
 
     private void settingsMenu() {
