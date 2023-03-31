@@ -108,14 +108,7 @@ private int selectAccountMenu() {
     Stage stage = new Stage();
     stage.setScene(scene);
     stage.showAndWait();
-    // add the following code to prevent stage from closing if no account selected
-    stage.setOnCloseRequest(event -> {
-        if (accountChoiceBox.getSelectionModel().isEmpty()) {
-            event.consume();
-            Alert alert = new Alert(Alert.AlertType.WARNING, "Please select an account.");
-            alert.showAndWait();
-        }
-    });
+
     return selectedAcc[0];
 }
 
@@ -355,6 +348,10 @@ private int selectAccountMenu() {
     
         // get account to withdraw from
         selectedAcc = selectAccountMenu();
+
+        if(selectedAcc == -1) {
+            return;
+        }
     
         accountBal = controller.getAccountBalance(selectedAcc);
         withdrawalLimit = controller.getWithdrawalLimit();
@@ -442,6 +439,10 @@ private int selectAccountMenu() {
     
         // get account to deposit to
         selectedAcc = selectAccountMenu();
+
+        if(selectedAcc == -1){
+            return;
+        }
     
         // get amount to deposit
         Label amountLabel = new Label("Enter the amount to deposit: $");
@@ -512,10 +513,23 @@ private int selectAccountMenu() {
     
         System.out.println("Transfer funds");
         typeTransfer = getTypeTransfer();
+
+        // if window is closed without confirming a transfer type selection,
+        // return to main menu
+        if(typeTransfer == -1){
+            return;
+        }
     
         // get account to transfer from
         System.out.println("Account to transfer from:");
         fromAcc = selectAccountMenu();
+        
+        // if window closed without confirming an account selection,
+        // return to main menu
+        if(fromAcc == -1){
+            return;
+        }
+
         acctBal = controller.getAccountBalance(fromAcc);
     
         switch (typeTransfer) {
@@ -523,6 +537,12 @@ private int selectAccountMenu() {
                 // get account to transfer to
                 System.out.println("Account to transfer to");
                 toAcc = selectAccountMenu();
+
+                // if window closed without confirming an account selection,
+                // return to main menu
+                if(toAcc == -1){
+                    return;
+                }
     
                 transferLimit = controller.getTransferLimit();
                 break;
@@ -530,6 +550,13 @@ private int selectAccountMenu() {
                 // get account to transfer to
                 ActionEvent event = new ActionEvent();
                 toAcc = selectExtAccountMenu(theBank, event);
+
+                // if window closed without confirming an account selection,
+                // return to main menu
+                if(toAcc == -1){
+                    return;
+                }
+
                 transferLimit = controller.getExternalTransferLimit();
                 break;
             default:
@@ -641,6 +668,8 @@ private int selectAccountMenu() {
                     alert.setContentText("Account UUID must have 10 characters. Please try again.");
                     alert.showAndWait();
                 }
+            } else {
+                return -1;
             }
         } while (uuid.length() != 10);
     

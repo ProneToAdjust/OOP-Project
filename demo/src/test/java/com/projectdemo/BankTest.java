@@ -57,7 +57,7 @@ public class BankTest {
 
     @Test
     public void getNameTest(){
-        sampleDB();
+        bank = new Bank("Fleeca");
         String name = bank.getName();
         assertEquals("Fleeca", name);
     }
