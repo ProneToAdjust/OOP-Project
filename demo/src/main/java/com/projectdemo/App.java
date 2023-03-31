@@ -48,7 +48,6 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         App app = new App();
-        boolean showQuit = false;
         boolean is_authenticated = false;
 		
 		// continue looping forever
@@ -61,7 +60,7 @@ public class App extends Application {
                 break;
             }
 			// stay in main menu until user quits
-			showQuit = app.mainMenu(bank, primaryStage);
+            app.mainMenu(bank, primaryStage);
         } while(true);
 }
 
@@ -174,7 +173,7 @@ private int selectAccountMenu() {
         return is_authenticated.get();
     }
 
-    private boolean mainMenu(Bank theBank, Stage primaryStage) {
+    private void mainMenu(Bank theBank, Stage primaryStage) {
 
         // initialise all the image views for the buttons
         Image imgView = new Image(getClass().getResourceAsStream("assets/info.png"));
@@ -210,7 +209,6 @@ private int selectAccountMenu() {
         // init
         // initialising of the button and linking of the imageviews
         // creating of HBox and VBox to sort out the formatting
-        AtomicBoolean isClosed = new AtomicBoolean(false);
         Label greetingLabel = new Label("Welcome, " + controller.getUserName());
         greetingLabel.setFont(new Font("Segoe Script", 26));
         Button showInfoButton = new Button("Show Account information");
@@ -259,10 +257,12 @@ private int selectAccountMenu() {
         logoutButton.setOnAction(event -> {
             System.out.println("Successfully logged out");
             DataStorage.saveDatabase(theBank);
-            isClosed.set(true);
             Stage stage = (Stage) logoutButton.getScene().getWindow();
             stage.close();
-            primaryStage.close();
+        });
+
+        primaryStage.setOnHidden(event -> {
+            DataStorage.saveDatabase(theBank);
         });
     
         // create scene and window/stage
@@ -270,19 +270,12 @@ private int selectAccountMenu() {
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.setTitle("Main Menu");
-        stage.showAndWait();
-        //supposedly close the gui but it's not rly working??
-        stage.setOnCloseRequest(event -> {
-            event.consume();
-            primaryStage.close();
+
+        stage.setOnHidden(event -> {
+            DataStorage.saveDatabase(theBank);
         });
 
-        if (isClosed.get()) {
-            
-            primaryStage.close();
-        }
-
-        return isClosed.get();
+        stage.showAndWait();
     }
 
     private void showAccountInformationMenu(Stage primaryStage) {
