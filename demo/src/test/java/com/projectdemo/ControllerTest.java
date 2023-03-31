@@ -84,7 +84,7 @@ public class ControllerTest {
 		testController.depositFunds(0, 100.00, "Test Deposit");
 		ArrayList<String> transactionHistory = testController.getTransactionHistory(0);
 		assertEquals(1, transactionHistory.size());
-		assertEquals("$100.00 : Test Deposit", transactionHistory.get(0).substring(30));
+		assertEquals("$100.00 : Test Deposit", transactionHistory.get(0).substring(36));
 	}
     
 
