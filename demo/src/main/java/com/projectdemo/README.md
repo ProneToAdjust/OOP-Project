@@ -31,12 +31,14 @@ Fundamental Features:
 ## Structure
 [Class diagram](https://drive.google.com/file/d/1KoX4luoK_NK2SpBI2MkVrSeJmxb0V-jC/view?usp=sharing)
 ### View
+- App.java
 - ATM.java
 
 ### Controller
 - Controller.java
 
 ### Model
+- DataStorage.java
 - Bank.java
 - User.java
 - Account.java
